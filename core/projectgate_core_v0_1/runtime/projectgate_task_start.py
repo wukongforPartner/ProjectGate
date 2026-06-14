@@ -2,6 +2,8 @@
 from __future__ import annotations
 import argparse, json, pathlib, re
 from datetime import datetime, timezone
+from projectgate_build_knowledge_index import build_index
+from projectgate_select_knowledge import select as select_knowledge
 
 PROFILE_ALIASES = {
     'l': 'L', 'low': 'L', 'light': 'L',
@@ -75,8 +77,10 @@ def main() -> int:
             raise RuntimeError(f'project manifest missing: {manifest_path}')
         manifest = read_json(manifest_path)
         profile = normalize_profile(args.profile)
-        sops = list_active_sops(pack)
-        rules = list_active_known_bug_rules(pack)
+        knowledge_index = build_index(pack)
+        selected_knowledge = select_knowledge(knowledge_index, args.task_type, 'TASK_STARTED', profile)
+        sops = [x for x in selected_knowledge if x.get('kind') == 'SOP']
+        rules = [x for x in selected_knowledge if x.get('kind') == 'KnownBugRule']
         run_root = pathlib.Path(args.run_root).resolve()
         run_id = datetime.now().strftime('%Y%m%d_%H%M%S') + '_' + safe(args.task_type)
         run_dir = run_root / run_id
@@ -91,6 +95,7 @@ def main() -> int:
             'stage': 'TASK_STARTED',
             'loadedSOPs': sops,
             'loadedKnownBugRules': rules,
+            'knowledgeSelection': {'mode': 'routed_v0_3', 'selectedCount': len(selected_knowledge), 'indexItemCount': knowledge_index.get('itemCount', 0)},
             'requiredRuntimeGates': [
                 'ACTIVE_SOPS_LOADED',
                 'ACTIVE_KNOWN_BUG_RULES_LOADED',

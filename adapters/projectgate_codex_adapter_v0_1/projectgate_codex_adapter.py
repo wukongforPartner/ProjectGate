@@ -81,6 +81,16 @@ ProjectGate is not just a set of instructions. For task types with active SOPs a
 
 If a matching SOP or KnownBugRule exists but is not loaded into `TaskRun.json`, the workflow is invalid.
 
+## L / M / H profile behavior
+
+- `-p L`: low-cost triage, smoke tests, and narrow read-only checks. Load always-on rules plus minimal task-type matches.
+- `-p M`: standard bounded project work. Load relevant task, stage, and tool rules. Produce entry maps or anchor maps when requested, but do not patch without owner authorization.
+- `-p H`: deep high-risk review. Use routed deep knowledge, not blind full-context loading. Suitable for runtime facts, cross-system entry maps, and pre-patch audits.
+
+## Knowledge growth rule
+
+Do not load every SOP and KnownBugRule into every task. Use Runtime Knowledge Router scripts to select relevant active knowledge. Successful reusable TaskRuns may create SOP candidates. Failures may create Incident / KnownBugRule candidates. Candidates are not active until owner approval.
+
 ## Destructive action rule
 
 No project file writes, patching, mutating Git, release, service, deployment, or external destructive action may occur without explicit owner authorization.
@@ -109,7 +119,12 @@ REQUIRED = [
     'references/project/README_ProjectPack.md',
     'scripts/runtime/projectgate_task_start.py',
     'scripts/runtime/projectgate_stage_gate.py',
-    'scripts/runtime/projectgate_delivery_check.py'
+    'scripts/runtime/projectgate_delivery_check.py',
+    'scripts/runtime/projectgate_promote_candidate.py',
+    'scripts/runtime/projectgate_incident_capture.py',
+    'scripts/runtime/projectgate_sop_candidate.py',
+    'scripts/runtime/projectgate_select_knowledge.py',
+    'scripts/runtime/projectgate_build_knowledge_index.py'
 ]
 
 

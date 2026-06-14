@@ -29,3 +29,7 @@ KNOWN_BUG_RULES_CHECKED=<active rule ids or summary>
 ```
 
 Gate 失败代表 `REPAIR_AND_RECHECK`：按失败原因修正并重新检查，不是把任务直接结束。
+
+## ProjectGate Knowledge Router v0.3
+
+Alpha v0.3.0 新增知识路由与沉淀闭环：`L / M / H` 不再只是成本标签，也决定 SOP / KnownBugRule 的选择范围。成功且可复用的 TaskRun 可以生成 SOP candidate；失败事故可以生成 KnownBugRule candidate；candidate 必须 owner 批准后才进入 active。

@@ -1,4 +1,4 @@
-# ProjectGate Alpha v0.2.0
+# ProjectGate Alpha v0.3.0
 
 ProjectGate is a project-agnostic governance layer for AI-assisted work.
 
@@ -77,3 +77,7 @@ Use in Codex:
 ## ProjectGate Runtime v0.2
 
 Alpha v0.2.0 adds Runtime Gate support. SOPs and KnownBugRules are no longer passive folders only. Real workflows must create a `TaskRun.json`, load active SOPs / KnownBugRules into the task, pass stage gates, use `REPAIR_AND_RECHECK` on gate failure, and pass a delivery check before final delivery.
+
+## ProjectGate Knowledge Router v0.3
+
+Alpha v0.3.0 adds knowledge routing and learning loops. `L / M / H` now controls SOP / KnownBugRule selection scope, not just cost. Successful reusable TaskRuns can create SOP candidates. Failures can create KnownBugRule candidates. Candidates require owner approval before becoming active.

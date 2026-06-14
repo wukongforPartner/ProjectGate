@@ -29,3 +29,7 @@ KNOWN_BUG_RULES_CHECKED=<active rule ids or summary>
 ```
 
 Gate failure means `REPAIR_AND_RECHECK`, not final termination.
+
+## ProjectGate Knowledge Router v0.3
+
+Alpha v0.3.0 adds knowledge routing and learning loops. `L / M / H` now controls SOP / KnownBugRule selection scope, not just cost. Successful reusable TaskRuns can create SOP candidates. Failures can create KnownBugRule candidates. Candidates require owner approval before becoming active.

@@ -1,24 +1,13 @@
-# Budget Profiles v0.1
+# ProjectGate 预算档位：L / M / H
 
-## low
+档位控制范围、成本和知识选择方式，不降低项目规则。
 
-用于 smoke test、初步拆分、低成本规划。
+| 档位 | 含义 | 范围 | 典型产物 | 适合场景 |
+|---|---|---|---|---|
+| `-p L` | 低成本 | 小范围 / smoke / 快速只读 | 事实、风险、安全下一步 | runtime smoke、小问题初查 |
+| `-p M` | 标准档 | 有边界的多文件 / 单机制链 | 入口地图、锚点地图草案、执行队列 | 真实但有范围的项目前置审查 |
+| `-p H` | 深度档 | 跨系统 / 高风险 / 完整相关链路 | 全相关入口地图、风险、owner decisions | runtime fact、补丁前审查、系统级审查 |
 
-- 默认不使用 subagents。
-- 优先使用本地脚本。
-- 早停到 owner decision。
+所有档位都必须遵守 ProjectGate Runtime gates、owner decision、不猜、写操作授权边界。
 
-## medium
-
-用于正常范围审查。
-
-- 先 evidence pack，再定向读取。
-- evidence 存在后才考虑 subagents。
-
-## high
-
-用于深度审查。
-
-- 允许多个 evidence packs。
-- evidence 存在后允许 subagents。
-- 破坏性动作仍需 owner 授权。
+`H` 不是盲目全量加载，而是更深的路由式审查。

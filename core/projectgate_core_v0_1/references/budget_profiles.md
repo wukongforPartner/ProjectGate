@@ -1,24 +1,13 @@
-# Budget Profiles v0.1
+# ProjectGate Budget Profiles: L / M / H
 
-## low
+Profiles control scope, cost, and knowledge selection. They do not weaken project rules.
 
-Use for smoke tests, triage, and low-cost planning.
+| Profile | Meaning | Scope | Typical output | Use cases |
+|---|---|---|---|---|
+| `-p L` | Low-cost | narrow / smoke / quick read-only | facts, risks, safe next step | runtime smoke, local question, small error triage |
+| `-p M` | Medium standard | bounded multi-file / one mechanism chain | entry map, anchor map draft, execution queue | real bounded project work before edits |
+| `-p H` | High-depth | cross-system / high-risk / full relevant chain | full routed entry map, risks, owner decisions | runtime fact, pre-patch audit, system-level review |
 
-- Avoid subagents by default.
-- Prefer local scripts over model context.
-- Stop early at owner decision.
+All profiles must obey ProjectGate Runtime gates, owner decisions, no-guessing rules, and write authorization boundaries.
 
-## medium
-
-Use for normal bounded review.
-
-- Use evidence packs before targeted reads.
-- Use subagents only after evidence exists.
-
-## high
-
-Use for deep review.
-
-- Multiple evidence packs allowed.
-- Subagents allowed after evidence exists.
-- Still requires owner authorization for destructive actions.
+`H` does not mean load everything blindly. It means deeper routed review.
