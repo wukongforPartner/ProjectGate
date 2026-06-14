@@ -16,6 +16,9 @@ def run(cmd):
 def main() -> int:
     required = [
         'install_projectgate_alpha.py',
+    'core/projectgate_core_v0_1/runtime/projectgate_task_start.py',
+    'core/projectgate_core_v0_1/runtime/projectgate_stage_gate.py',
+    'core/projectgate_core_v0_1/runtime/projectgate_delivery_check.py',
         'README.md',
         'core/projectgate_core_v0_1/scripts/projectgate_core_selftest.py',
         'adapters/projectgate_codex_adapter_v0_1/projectgate_codex_adapter.py',

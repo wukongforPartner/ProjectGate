@@ -1,10 +1,4 @@
-## Contact
-
-* WeChat: songfoguixi
-* Email: [346636594@qq.com](mailto:346636594@qq.com)
-
-
-# ProjectGate Alpha v0.1
+# ProjectGate Alpha v0.2.0
 
 ProjectGate is a project-agnostic governance layer for AI-assisted work.
 
@@ -80,7 +74,6 @@ Use in Codex:
 /goal $projectgate -p L: Review this issue and produce an action queue. Do not modify project files.
 ```
 
-## Contact
+## ProjectGate Runtime v0.2
 
-- WeChat: songfoguixi
-- Email: 346636594@qq.com
+Alpha v0.2.0 adds Runtime Gate support. SOPs and KnownBugRules are no longer passive folders only. Real workflows must create a `TaskRun.json`, load active SOPs / KnownBugRules into the task, pass stage gates, use `REPAIR_AND_RECHECK` on gate failure, and pass a delivery check before final delivery.

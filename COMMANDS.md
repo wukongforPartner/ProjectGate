@@ -50,3 +50,7 @@ python ".\install_projectgate_alpha.py" --install `
 ```text
 /goal $projectgate -p H: Deep readonly audit. Use evidence first and do not write project files.
 ```
+
+## ProjectGate Runtime v0.2
+
+Alpha v0.2.0 adds Runtime Gate support. SOPs and KnownBugRules are no longer passive folders only. Real workflows must create a `TaskRun.json`, load active SOPs / KnownBugRules into the task, pass stage gates, use `REPAIR_AND_RECHECK` on gate failure, and pass a delivery check before final delivery.

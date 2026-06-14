@@ -50,3 +50,7 @@ python ".\install_projectgate_alpha.py" --install `
 ```text
 /goal $projectgate -p H: Deep readonly audit. Use evidence first and do not write project files.
 ```
+
+## ProjectGate Runtime v0.2
+
+Alpha v0.2.0 新增 Runtime Gate：SOP 和 KnownBugRules 不再只是文档结构。真实工作流必须先生成 `TaskRun.json`，把 active SOP / KnownBugRules 载入本次任务；阶段输出必须通过 stage gate；失败时进入 `REPAIR_AND_RECHECK`，修正后重新检查；最终交付前必须通过 delivery check。

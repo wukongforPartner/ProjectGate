@@ -174,3 +174,7 @@ ProjectGate Alpha defaults to:
 - Generic Markdown support is basic.
 - Hard hooks are not fully installed by default.
 - Candidate SOPs and known bug rules still require owner approval before becoming active.
+
+## ProjectGate Runtime v0.2
+
+Alpha v0.2.0 adds Runtime Gate support. SOPs and KnownBugRules are no longer passive folders only. Real workflows must create a `TaskRun.json`, load active SOPs / KnownBugRules into the task, pass stage gates, use `REPAIR_AND_RECHECK` on gate failure, and pass a delivery check before final delivery.

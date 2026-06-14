@@ -1,10 +1,4 @@
-## 联系方式
-
-* 微信：songfoguixi
-* 邮箱：[346636594@qq.com](mailto:346636594@qq.com)
-
-
-# ProjectGate Alpha v0.1.1
+# ProjectGate Alpha v0.2.0
 
 ProjectGate 是一个面向 AI 协作的项目治理层。它把项目文档、SOP、规则和事故经验编译成 AI 可以遵守的工作流。
 
@@ -73,7 +67,6 @@ Codex 中使用：
 
 背景与问题说明：`BACKGROUND_CN.md` / `BACKGROUND.md`。
 
-## 联系方式
+## ProjectGate Runtime v0.2
 
-- 微信：songfoguixi
-- 邮箱：346636594@qq.com
+Alpha v0.2.0 新增 Runtime Gate：SOP 和 KnownBugRules 不再只是文档结构。真实工作流必须先生成 `TaskRun.json`，把 active SOP / KnownBugRules 载入本次任务；阶段输出必须通过 stage gate；失败时进入 `REPAIR_AND_RECHECK`，修正后重新检查；最终交付前必须通过 delivery check。

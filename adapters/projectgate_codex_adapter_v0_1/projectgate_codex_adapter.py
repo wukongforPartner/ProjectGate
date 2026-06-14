@@ -69,6 +69,18 @@ Do not ask the user to restate cache, role, fact, or Git read-only constraints. 
 7. Write full reports to the configured run directory when file writes outside the project are allowed.
 8. Stop with `OWNER_DECISION_REQUIRED` for product judgment, write authorization, FAIL, UNKNOWN, unsupported gates, or budget escalation.
 
+## Runtime enforcement behavior
+
+ProjectGate is not just a set of instructions. For task types with active SOPs and active KnownBugRules, they must enter the runtime flow:
+
+1. Start each real workflow by creating a `TaskRun.json` with `scripts/runtime/projectgate_task_start.py`.
+2. The task output must declare `SOP_USED=` and `KNOWN_BUG_RULES_CHECKED=`.
+3. Every stage output must pass `scripts/runtime/projectgate_stage_gate.py`.
+4. Gate failures use `REPAIR_AND_RECHECK`: repair the output according to gate fail reasons and rerun the gate.
+5. Final delivery must pass `scripts/runtime/projectgate_delivery_check.py`.
+
+If a matching SOP or KnownBugRule exists but is not loaded into `TaskRun.json`, the workflow is invalid.
+
 ## Destructive action rule
 
 No project file writes, patching, mutating Git, release, service, deployment, or external destructive action may occur without explicit owner authorization.
@@ -94,7 +106,10 @@ REQUIRED = [
     'references/core/owner_decision_protocol.md',
     'references/project/project_manifest.json',
     'references/project/AGENTS.md.template',
-    'references/project/README_ProjectPack.md'
+    'references/project/README_ProjectPack.md',
+    'scripts/runtime/projectgate_task_start.py',
+    'scripts/runtime/projectgate_stage_gate.py',
+    'scripts/runtime/projectgate_delivery_check.py'
 ]
 
 
@@ -255,6 +270,10 @@ def build(args) -> int:
             copytree_merge(pack / dirname, out / 'projectgate' / 'references' / 'project' / dirname)
     write_skill(out, manifest)
     write_scripts(out)
+
+    runtime_src = core / 'runtime'
+    if runtime_src.exists():
+        copytree_merge(runtime_src, out / 'projectgate' / 'scripts' / 'runtime')
     write_installer(out)
     (out / 'README_INSTALL.md').write_text(f'''# ProjectGate Codex Pack\n\nGenerated for project: {manifest.get('projectName')}\n\n## Install\n\n```powershell\npython install_projectgate_codex_pack.py --dry-run\npython install_projectgate_codex_pack.py --install\n```\n\n## Optional project AGENTS.md\n\n```powershell\npython install_projectgate_codex_pack.py --dry-run --install-project-agents-md --project-root "<PROJECT_ROOT>"\n```\n\n## Use\n\n```text\n/goal $projectgate -p L: <task>\n/goal $projectgate -p M: <task>\n/goal $projectgate -p H: <task>\n```\n''', encoding='utf-8', newline='\n')
     package_manifest = {

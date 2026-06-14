@@ -333,3 +333,7 @@ ProjectGate 目前处于 Alpha 阶段。
 ProjectGate 是一个把项目文档、SOP、门禁和事故经验编译成 AI 工作流的治理层。
 
 它的目标不是替代人，而是让 AI 在长期复杂项目中按事实、流程、角色和授权边界工作。
+
+## ProjectGate Runtime v0.2
+
+Alpha v0.2.0 新增 Runtime Gate：SOP 和 KnownBugRules 不再只是文档结构。真实工作流必须先生成 `TaskRun.json`，把 active SOP / KnownBugRules 载入本次任务；阶段输出必须通过 stage gate；失败时进入 `REPAIR_AND_RECHECK`，修正后重新检查；最终交付前必须通过 delivery check。

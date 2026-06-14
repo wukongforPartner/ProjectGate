@@ -158,3 +158,7 @@ ProjectGate Alpha 默认：
 - Generic Markdown 支持还比较基础。
 - hooks 默认没有完整安装。
 - SOP 和 KnownBugRule candidate 仍需 owner 审核才能激活。
+
+## ProjectGate Runtime v0.2
+
+Alpha v0.2.0 新增 Runtime Gate：SOP 和 KnownBugRules 不再只是文档结构。真实工作流必须先生成 `TaskRun.json`，把 active SOP / KnownBugRules 载入本次任务；阶段输出必须通过 stage gate；失败时进入 `REPAIR_AND_RECHECK`，修正后重新检查；最终交付前必须通过 delivery check。

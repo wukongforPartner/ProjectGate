@@ -308,3 +308,7 @@ Still evolving:
 ProjectGate compiles project documents, SOPs, gates, and incident lessons into an AI workflow governance layer.
 
 Its goal is not to replace people, but to make AI work inside long-running projects according to facts, process, roles, and authorization boundaries.
+
+## ProjectGate Runtime v0.2
+
+Alpha v0.2.0 adds Runtime Gate support. SOPs and KnownBugRules are no longer passive folders only. Real workflows must create a `TaskRun.json`, load active SOPs / KnownBugRules into the task, pass stage gates, use `REPAIR_AND_RECHECK` on gate failure, and pass a delivery check before final delivery.
