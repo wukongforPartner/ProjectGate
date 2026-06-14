@@ -1,3 +1,9 @@
+## 联系方式
+
+* 微信：songfoguixi
+* 邮箱：[346636594@qq.com](mailto:346636594@qq.com)
+
+
 # ProjectGate Alpha v0.1.1
 
 ProjectGate 是一个面向 AI 协作的项目治理层。它把项目文档、SOP、规则和事故经验编译成 AI 可以遵守的工作流。
@@ -66,3 +72,8 @@ Codex 中使用：
 
 
 背景与问题说明：`BACKGROUND_CN.md` / `BACKGROUND.md`。
+
+## 联系方式
+
+- 微信：songfoguixi
+- 邮箱：346636594@qq.com

@@ -1,3 +1,9 @@
+## Contact
+
+* WeChat: songfoguixi
+* Email: [346636594@qq.com](mailto:346636594@qq.com)
+
+
 # ProjectGate Alpha v0.1
 
 ProjectGate is a project-agnostic governance layer for AI-assisted work.
@@ -73,3 +79,8 @@ Use in Codex:
 ```text
 /goal $projectgate -p L: Review this issue and produce an action queue. Do not modify project files.
 ```
+
+## Contact
+
+- WeChat: songfoguixi
+- Email: 346636594@qq.com
