@@ -1,0 +1,8 @@
+{
+  "schema": "projectgate_project_pack_v0_1",
+  "projectId": "dreamstory",
+  "projectName": "梦境物语",
+  "packVersion": "0.1.0",
+  "defaultBudget": "low",
+  "description": "DreamStory project-specific rules and knowledge pack for ProjectGate Core."
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "projectgate_task_types_v0_1",
+  "taskTypes": [
+    {
+      "id": "dreamstory_player_feedback_triage",
+      "name": "DreamStory player feedback triage",
+      "defaultStage": "READONLY_AUDIT",
+      "defaultBudget": "low",
+      "deliverable": "player feedback execution queue"
+    },
+    {
+      "id": "dreamstory_runtime_fact_entry_map",
+      "name": "DreamStory runtime fact entry map",
+      "defaultStage": "ENTRY_MAP",
+      "defaultBudget": "medium",
+      "deliverable": "entry map"
+    }
+  ]
+}

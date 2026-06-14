@@ -1,0 +1,18 @@
+# ProjectGate Project Instructions
+
+This repository uses ProjectGate.
+
+## Always-on rules
+
+1. Start ambiguous or high-risk tasks with read-only audit.
+2. Do not guess.
+3. Missing facts stop progress or trigger read-only fact collection.
+4. Destructive actions require explicit owner authorization.
+5. Follow the active Project Pack and active SOPs.
+6. Use owner decision protocol when judgment or authorization is needed.
+7. Record repeatable failures as incident candidates.
+8. Record reusable workflows as SOP candidates.
+
+## Skill routing
+
+Use the configured ProjectGate workflow for tasks that involve project files, code, configuration, release, operations, data, or long-running analysis.

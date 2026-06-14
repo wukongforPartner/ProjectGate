@@ -1,0 +1,26 @@
+{
+  "schema": "projectgate_known_bug_rules_v0_1",
+  "rules": [
+    {
+      "bugId": "DREAMSTORY-RUNTIME-FACT-SINGLE-ENTRY-001",
+      "title": "Runtime fact cannot be derived from a single entry",
+      "trigger": ["runtime_fact", "analytics"],
+      "requiredGate": "entry_map_complete_before_fields_or_event_names",
+      "severity": "blocker"
+    },
+    {
+      "bugId": "DREAMSTORY-STARTSCENE-PROTECTED-001",
+      "title": "StartScene.unity requires explicit owner authorization",
+      "trigger": ["unity_scene_write", "patch"],
+      "requiredGate": "owner_authorization_for_startscene",
+      "severity": "blocker"
+    },
+    {
+      "bugId": "DREAMSTORY-PATCH-ANCHOR-MAP-001",
+      "title": "Patch requires anchor map before script or edits",
+      "trigger": ["patch", "script_delivery"],
+      "requiredGate": "anchor_map_complete",
+      "severity": "blocker"
+    }
+  ]
+}

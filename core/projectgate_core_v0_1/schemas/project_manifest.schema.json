@@ -1,0 +1,12 @@
+{
+  "schema": "projectgate_project_manifest_schema_v0_1",
+  "required": ["projectId", "projectName", "projectRoot", "packVersion"],
+  "properties": {
+    "projectId": "string",
+    "projectName": "string",
+    "projectRoot": "string",
+    "packVersion": "string",
+    "defaultBudget": "low|medium|high",
+    "adapters": "array"
+  }
+}

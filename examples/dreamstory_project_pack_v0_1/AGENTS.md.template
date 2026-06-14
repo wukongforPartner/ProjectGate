@@ -1,0 +1,20 @@
+# 《梦境物语》ProjectGate Instructions
+
+本项目使用 ProjectGate Core + DreamStory Project Pack。
+
+## Always-on boundaries
+
+1. 默认只读优先。
+2. 缺事实必须停或只读补事实。
+3. 禁止猜。
+4. 禁止越阶段。
+5. 写项目文件、补丁、Unity 场景或配置、Git 写操作、Steam、服务器动作必须显式 owner authorization。
+6. runtime fact 不得从单入口推全局，必须先完成入口地图。
+7. 补丁前必须完成锚点地图。
+8. StartScene.unity 默认保护，除非 owner 明确要求。
+9. 只读 Git fingerprint 允许：`git status --short`、`git rev-parse HEAD`。
+10. 完整报告写入 ContextExports，聊天窗口只输出短状态。
+
+## Skill routing
+
+涉及 Unity、Effect、PropEffect、RichText、DreamArchive、SaveData、runtime fact、analytics、Steam、服务器、补丁、脚本、玩家反馈拆分的任务，必须使用 ProjectGate / DreamStory workflow。

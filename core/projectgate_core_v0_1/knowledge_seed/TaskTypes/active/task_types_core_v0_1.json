@@ -1,0 +1,17 @@
+{
+  "schema": "projectgate_task_types_v0_1",
+  "taskTypes": [
+    {
+      "id": "readonly_audit",
+      "name": "Read-only audit",
+      "defaultStage": "READONLY_AUDIT",
+      "defaultBudget": "low"
+    },
+    {
+      "id": "unknown_task_discovery",
+      "name": "Unknown task type discovery",
+      "defaultStage": "READONLY_AUDIT",
+      "defaultBudget": "low"
+    }
+  ]
+}

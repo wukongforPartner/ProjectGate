@@ -1,0 +1,8 @@
+{
+  "schema": "projectgate_evidence_profile_v0_1",
+  "id": "dreamstory_player_feedback_triage",
+  "defaultBudget": "low",
+  "defaultKeywords": ["RewardChoice", "Tooltip", "Nightmare", "Echo", "Evolution", "Progress"],
+  "maxEvidencePacksLow": 2,
+  "maxEvidencePacksMedium": 5
+}
