@@ -14,6 +14,13 @@ If the gate fails, the next action is `REPAIR_AND_RECHECK`, not silent terminati
 
 A final deliverable is not considered valid unless `projectgate_delivery_check.py` confirms that SOPs/rules were loaded and at least one passing gate exists.
 
-## Auto Capture v0.3.1
+## Auto Capture v0.3.2
 
 Failures no longer only return FAIL. Runtime automatically captures incidents and creates KnownBugRule candidates. Successful delivery checks automatically create SOP candidates. Candidates require owner approval before becoming active.
+
+
+## Auto Capture v0.3.2
+
+- TaskRun directories are now allocated with microsecond precision and collision retry.
+- `projectgate_task_start.py` no longer fails when two same-type runs start within the same second.
+- Pre-TaskRun failures can emit a pretask incident and a KnownBugRule candidate when a run root is available.

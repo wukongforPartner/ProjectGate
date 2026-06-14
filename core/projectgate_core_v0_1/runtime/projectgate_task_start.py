@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, json, pathlib, re
+import argparse, json, pathlib, re, os
 from datetime import datetime, timezone
 from projectgate_build_knowledge_index import build_index
 from projectgate_select_knowledge import select as select_knowledge
@@ -60,6 +60,100 @@ def list_active_known_bug_rules(pack: pathlib.Path) -> list[dict]:
     return out
 
 
+
+def make_unique_run_dir(run_root: pathlib.Path, task_type: str) -> tuple[str, pathlib.Path]:
+    base = datetime.now().strftime('%Y%m%d_%H%M%S_%f') + '_' + safe(task_type)
+    for index in range(0, 100):
+        run_id = base if index == 0 else f'{base}_{index + 1}'
+        run_dir = run_root / run_id
+        try:
+            run_dir.mkdir(parents=True, exist_ok=False)
+            return run_id, run_dir
+        except FileExistsError:
+            continue
+    raise RuntimeError('unable to allocate unique run directory after 100 attempts')
+
+
+def classify_pretask_failure(message: str) -> dict:
+    text = message or ''
+    if 'WinError 183' in text or 'File exists' in text or 'already exists' in text or '当文件已存在' in text:
+        return {
+            'ruleId': 'PG-TASKSTART-RUN-DIR-COLLISION-001',
+            'classification': 'NEW_RULE_CANDIDATE_NEEDED',
+            'title': 'TaskStart run directory collision',
+            'triggers': ['task_start', 'run_root', 'run_directory', 'WinError 183'],
+            'onFail': 'AUTO_UNIQUE_RUN_ID_AND_RECHECK',
+        }
+    return {
+        'ruleId': 'PG-TASKSTART-PRETASK-FAIL-001',
+        'classification': 'NEW_RULE_CANDIDATE_NEEDED',
+        'title': 'TaskStart failed before TaskRun creation',
+        'triggers': ['task_start', 'pretask_failure'],
+        'onFail': 'REPAIR_AND_RECHECK',
+    }
+
+
+def write_json(path: pathlib.Path, payload: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+
+def capture_pretask_failure(args: argparse.Namespace, exc: Exception) -> dict:
+    message = str(exc)
+    now = datetime.now(timezone.utc).isoformat()
+    stamp = datetime.now().strftime('%Y%m%d_%H%M%S_%f')
+    info = classify_pretask_failure(message)
+    result: dict = {'incidentPath': '', 'candidatePath': '', 'ruleId': info['ruleId'], 'classification': info['classification']}
+
+    try:
+        run_root = pathlib.Path(args.run_root).resolve()
+        incident_dir = run_root / '_projectgate_pretask_failures'
+        incident_path = incident_dir / f"{info['ruleId']}_{stamp}.json"
+        incident = {
+            'schema': 'projectgate_pretask_incident_v0_3_2',
+            'createdUtc': now,
+            'incidentId': f"AUTO-{info['ruleId']}-{stamp}",
+            'title': info['title'],
+            'symptom': message,
+            'failedStage': 'TASK_START',
+            'taskType': getattr(args, 'task_type', ''),
+            'taskTitle': getattr(args, 'task_title', ''),
+            'profile': getattr(args, 'profile', ''),
+            'runRoot': str(run_root),
+            'candidateRuleId': info['ruleId'],
+            'classification': info['classification'],
+        }
+        write_json(incident_path, incident)
+        result['incidentPath'] = str(incident_path)
+    except Exception as incident_exc:
+        result['incidentError'] = str(incident_exc)
+
+    try:
+        pack = pathlib.Path(args.project_pack).resolve()
+        if pack.exists():
+            cand_dir = pack / 'KnownBugRules' / 'candidates'
+            cand_path = cand_dir / f"{info['ruleId']}_{stamp}.json"
+            candidate = {
+                'schema': 'projectgate_known_bug_rule_candidate_v0_3_2',
+                'createdUtc': now,
+                'bugId': info['ruleId'],
+                'title': info['title'],
+                'symptom': message,
+                'trigger': info['triggers'],
+                'onFail': info['onFail'],
+                'source': 'projectgate_task_start.py pre-TaskRun failure capture',
+                'classification': info['classification'],
+                'ownerApprovalRequired': True,
+                'active': False,
+            }
+            write_json(cand_path, candidate)
+            result['candidatePath'] = str(cand_path)
+    except Exception as candidate_exc:
+        result['candidateError'] = str(candidate_exc)
+
+    return result
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description='Start a ProjectGate runtime task and force SOP/KnownBugRules into TaskRun.json.')
     ap.add_argument('--project-pack', required=True)
@@ -82,11 +176,9 @@ def main() -> int:
         sops = [x for x in selected_knowledge if x.get('kind') == 'SOP']
         rules = [x for x in selected_knowledge if x.get('kind') == 'KnownBugRule']
         run_root = pathlib.Path(args.run_root).resolve()
-        run_id = datetime.now().strftime('%Y%m%d_%H%M%S') + '_' + safe(args.task_type)
-        run_dir = run_root / run_id
-        run_dir.mkdir(parents=True, exist_ok=False)
+        run_id, run_dir = make_unique_run_dir(run_root, args.task_type)
         taskrun = {
-            'schema': 'projectgate_taskrun_runtime_v0_2',
+            'schema': 'projectgate_taskrun_runtime_v0_3_2',
             'createdUtc': datetime.now(timezone.utc).isoformat(),
             'runId': run_id,
             'projectPack': str(pack),
@@ -121,9 +213,18 @@ def main() -> int:
         print('LOADED_KNOWN_BUG_RULES=' + str(len(rules)))
         return 0
     except Exception as exc:
+        capture = capture_pretask_failure(args, exc)
         print('RESULT=FAIL')
         print('FAILED_STAGE=TASK_START')
         print('FAIL_REASON=' + str(exc))
+        if capture.get('incidentPath'):
+            print('PRETASK_INCIDENT=' + capture['incidentPath'])
+        if capture.get('candidatePath'):
+            print('KNOWN_BUG_RULE_CANDIDATE=' + capture['candidatePath'])
+        if capture.get('ruleId'):
+            print('CANDIDATE_RULE_ID=' + capture['ruleId'])
+        if capture.get('classification'):
+            print('CANDIDATE_CLASSIFICATION=' + capture['classification'])
         return 1
 
 if __name__ == '__main__':
