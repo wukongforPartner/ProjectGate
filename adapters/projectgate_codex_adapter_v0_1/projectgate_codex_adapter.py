@@ -132,6 +132,7 @@ REQUIRED = [
     'scripts/runtime/projectgate_stage_gate.py',
     'scripts/runtime/projectgate_delivery_check.py',
     'scripts/runtime/projectgate_observation_gate.py',
+    'scripts/runtime/projectgate_taskrun_continuity_gate.py',
     'scripts/runtime/projectgate_autocapture.py',
     'scripts/runtime/projectgate_promote_candidate.py',
     'scripts/runtime/projectgate_incident_capture.py',

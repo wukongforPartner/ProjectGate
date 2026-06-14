@@ -7,6 +7,21 @@ GET_CONTENT_NO_UTF8_RE = re.compile(r'Get-Content(?![^\n\r]*-Encoding\s+UTF8)', 
 ACCESS_DENIED_RE = re.compile(r'(WinError\s*5|Access\s+denied|拒绝访问)', re.I)
 REPAIR_RESULT_FILE_RE = re.compile(r'ProjectGate_.*_repair_result\.json', re.I)
 
+TASKRUN_PATH_RE = re.compile(r"(?:TASKRUN=)?([A-Za-z]:[^\r\n\"']*?TaskRun\.json|/[^\r\n\"']*?TaskRun\.json)", re.I)
+
+
+def extract_taskrun_paths(text: str) -> list[str]:
+    found: list[str] = []
+    seen = set()
+    for m in TASKRUN_PATH_RE.finditer(text or ''):
+        raw = m.group(1).strip().rstrip('.,;')
+        norm = raw.replace('/', '\\').lower()
+        if norm not in seen:
+            seen.add(norm)
+            found.append(raw)
+    return found
+
+
 
 def utc() -> str:
     return datetime.now(timezone.utc).isoformat()
@@ -200,4 +215,14 @@ def detect_observation_issues(text: str) -> list[dict]:
         issues.append({'ruleId': 'PG-RUNROOT-WRITABLE-PREFLIGHT-001', 'title': 'Run root must be writable before task_start', 'trigger': ['runroot','permission','windows'], 'symptom': 'Observation includes access denied / WinError 5 while writing run artifacts.', 'severity': 'fail'})
     if REPAIR_RESULT_FILE_RE.search(text):
         issues.append({'ruleId': 'PG-RELEASE-LOCAL-RESULT-FILE-NO-COMMIT-001', 'title': 'Local repair result JSON must not enter release tree', 'trigger': ['release','git','repair_result'], 'symptom': 'Observation references ProjectGate repair result JSON in git/release output.', 'severity': 'fail'})
+    taskrun_paths = extract_taskrun_paths(text)
+    if len(taskrun_paths) > 1:
+        issues.append({
+            'ruleId': 'PG-RUNTIME-SINGLE-PRIMARY-TASKRUN-001',
+            'title': 'One ProjectGate goal should use one primary TaskRun',
+            'trigger': ['taskrun', 'continuity', 'multiple_taskruns'],
+            'symptom': 'Observation contains multiple distinct TaskRun paths. Stage gate and delivery check may be bound to a different TaskRun than the one created at goal start.',
+            'severity': 'fail',
+            'observedTaskRuns': taskrun_paths,
+        })
     return issues
