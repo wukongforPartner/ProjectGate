@@ -59,6 +59,15 @@ Alpha v0.2.0 adds Runtime Gate support. SOPs and KnownBugRules are no longer pas
 
 Alpha v0.3.0 adds knowledge routing and learning loops. `L / M / H` now controls SOP / KnownBugRule selection scope, not just cost. Successful reusable TaskRuns can create SOP candidates. Failures can create KnownBugRule candidates. Candidates require owner approval before becoming active.
 
-## ProjectGate Auto Capture v0.3.3
+## ProjectGate Auto Capture v0.4.0
 
-Alpha v0.3.3 adds automatic learning-loop capture. Stage gate / delivery check failures automatically create incidents and KnownBugRule candidates. Successful delivery checks automatically create SOP candidates. The owner only approves or rejects candidates instead of manually writing them. If a similar rule already exists, ProjectGate records whether the active rule was not selected, selected but not enforced, or too coarse.
+Alpha v0.4.0 adds automatic learning-loop capture. Stage gate / delivery check failures automatically create incidents and KnownBugRule candidates. Successful delivery checks automatically create SOP candidates. The owner only approves or rejects candidates instead of manually writing them. If a similar rule already exists, ProjectGate records whether the active rule was not selected, selected but not enforced, or too coarse.
+
+
+## Operator Workflow v0.4.0
+
+- Added candidate lifecycle tooling for listing, showing, approving, rejecting, and merging SOP / KnownBugRule candidates.
+- Added Project Pack manager for pack info, validation, export, and controlled install.
+- Added `projectgate_cli.py` as a unified command wrapper for start, stage, delivery, observe, continuity, candidates, pack, status, and controlled command execution.
+- Added root `pg.py` and `pg.bat` entrypoints for shorter local commands.
+- Added `pg exec` so ProjectGate-controlled commands can automatically write execution logs and run observation gate.
