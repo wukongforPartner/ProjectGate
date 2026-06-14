@@ -8,3 +8,6 @@ venv/
 .DS_Store
 Thumbs.db
 *.log
+
+# ProjectGate local repair logs
+ProjectGate_v0_2_0_repair_result.json
