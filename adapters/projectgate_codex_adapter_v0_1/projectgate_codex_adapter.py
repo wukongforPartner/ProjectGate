@@ -91,6 +91,17 @@ If a matching SOP or KnownBugRule exists but is not loaded into `TaskRun.json`, 
 
 Do not load every SOP and KnownBugRule into every task. Use Runtime Knowledge Router scripts to select relevant active knowledge. Successful reusable TaskRuns may create SOP candidates. Failures may create Incident / KnownBugRule candidates. Candidates are not active until owner approval.
 
+## Automatic success / failure capture
+
+Within the ProjectGate Runtime flow, success and failure must create candidates automatically:
+
+- stage gate failure -> auto incident + KnownBugRule candidate.
+- delivery check failure -> auto incident + KnownBugRule candidate.
+- successful delivery check -> auto SOP candidate when no candidate exists for the task type.
+- observation gate can scan transcripts/logs for mojibake, missing UTF-8 PowerShell reads, run-root permission failures, and local repair result files.
+
+The owner only approves or rejects candidates. The owner should not be asked to manually write candidates.
+
 ## Destructive action rule
 
 No project file writes, patching, mutating Git, release, service, deployment, or external destructive action may occur without explicit owner authorization.
@@ -120,6 +131,8 @@ REQUIRED = [
     'scripts/runtime/projectgate_task_start.py',
     'scripts/runtime/projectgate_stage_gate.py',
     'scripts/runtime/projectgate_delivery_check.py',
+    'scripts/runtime/projectgate_observation_gate.py',
+    'scripts/runtime/projectgate_autocapture.py',
     'scripts/runtime/projectgate_promote_candidate.py',
     'scripts/runtime/projectgate_incident_capture.py',
     'scripts/runtime/projectgate_sop_candidate.py',

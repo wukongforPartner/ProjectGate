@@ -21,3 +21,7 @@ Runtime 不应该每次读取全部 SOP 和全部错误门禁，而应该：
 - 成功且可复用的 TaskRun -> SOP candidate。
 - 失败 / 事故 -> KnownBugRule candidate。
 - owner 批准 -> active SOP / active KnownBugRule。
+
+## Auto Capture v0.3.1
+
+失败不再只返回 FAIL。Runtime 会自动捕获 incident，并生成 KnownBugRule candidate。成功的 delivery check 会自动生成 SOP candidate。candidate 需要 owner 批准后才可进入 active。

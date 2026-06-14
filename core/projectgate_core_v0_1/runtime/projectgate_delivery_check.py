@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 import argparse, json, pathlib
+from projectgate_autocapture import create_incident_and_candidate, create_sop_candidate_if_needed, safe
 
 
 def main() -> int:
@@ -19,12 +20,28 @@ def main() -> int:
         if not any(g.get('result') == 'PASS' for g in gates):
             reasons.append('no passing stage gate recorded')
         if reasons:
+            symptom = ' | '.join(reasons)
+            try:
+                create_incident_and_candidate(
+                    path,
+                    incident_id='AUTO-DELIVERY-CHECK-FAIL',
+                    title='Delivery check failed',
+                    symptom=symptom,
+                    rule_id='PG-DELIVERY-CHECK-FAIL-001',
+                    triggers=['delivery_check', str((taskrun.get('task') or {}).get('type') or 'unknown_task')],
+                    on_fail='REPAIR_AND_RECHECK',
+                )
+            except Exception as capture_exc:
+                reasons.append('auto incident capture failed: ' + str(capture_exc))
             print('RESULT=FAIL')
             print('FAILED_STAGE=DELIVERY_CHECK')
+            print('NEXT_ACTION=REPAIR_AND_RECHECK')
             print('FAIL_REASON=' + ' | '.join(reasons))
             return 1
+        sop_candidate = create_sop_candidate_if_needed(path)
         print('RESULT=PASS')
         print('DELIVERY_CHECK=PASS')
+        print('AUTO_SOP_CANDIDATE=' + str(sop_candidate))
         return 0
     except Exception as exc:
         print('RESULT=FAIL')

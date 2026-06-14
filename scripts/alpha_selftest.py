@@ -19,6 +19,8 @@ def main() -> int:
     'core/projectgate_core_v0_1/runtime/projectgate_task_start.py',
     'core/projectgate_core_v0_1/runtime/projectgate_stage_gate.py',
     'core/projectgate_core_v0_1/runtime/projectgate_delivery_check.py',
+    'core/projectgate_core_v0_1/runtime/projectgate_observation_gate.py',
+    'core/projectgate_core_v0_1/runtime/projectgate_autocapture.py',
     'core/projectgate_core_v0_1/runtime/projectgate_promote_candidate.py',
     'core/projectgate_core_v0_1/runtime/projectgate_incident_capture.py',
     'core/projectgate_core_v0_1/runtime/projectgate_sop_candidate.py',

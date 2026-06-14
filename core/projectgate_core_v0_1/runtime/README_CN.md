@@ -13,3 +13,7 @@ ProjectGate Runtime 的目标是把 SOP 和 KnownBugRules 从“被动文档”�
 如果 gate 失败，下一步不是“结束”，而是 `REPAIR_AND_RECHECK`：把失败原因反馈给 AI，修正后重新检查。
 
 最终交付前必须由 `projectgate_delivery_check.py` 确认 SOP / KnownBugRules 已进入本次 TaskRun，并且至少有一次阶段 gate 通过。
+
+## Auto Capture v0.3.1
+
+失败不再只返回 FAIL。Runtime 会自动捕获 incident，并生成 KnownBugRule candidate。成功的 delivery check 会自动生成 SOP candidate。candidate 需要 owner 批准后才可进入 active。

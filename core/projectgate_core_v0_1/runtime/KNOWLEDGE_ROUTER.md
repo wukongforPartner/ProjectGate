@@ -21,3 +21,7 @@ The runtime should not load every SOP and every rule into every task. Instead it
 - Successful repeatable TaskRun -> SOP candidate.
 - Failure / incident -> KnownBugRule candidate.
 - Owner approval -> active SOP / active KnownBugRule.
+
+## Auto Capture v0.3.1
+
+Failures no longer only return FAIL. Runtime automatically captures incidents and creates KnownBugRule candidates. Successful delivery checks automatically create SOP candidates. Candidates require owner approval before becoming active.

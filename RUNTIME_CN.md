@@ -33,3 +33,7 @@ Gate 失败代表 `REPAIR_AND_RECHECK`：按失败原因修正并重新检查，
 ## ProjectGate Knowledge Router v0.3
 
 Alpha v0.3.0 新增知识路由与沉淀闭环：`L / M / H` 不再只是成本标签，也决定 SOP / KnownBugRule 的选择范围。成功且可复用的 TaskRun 可以生成 SOP candidate；失败事故可以生成 KnownBugRule candidate；candidate 必须 owner 批准后才进入 active。
+
+## ProjectGate Auto Capture v0.3.1
+
+Alpha v0.3.1 新增自动沉淀闭环：stage gate / delivery check 失败会自动生成 incident 和 KnownBugRule candidate；delivery check 成功会自动生成 SOP candidate。owner 只负责 approve / reject，不再负责手写候选规则。若已有同类规则，系统会记录是 active 规则未被选中、已选中但未执行、还是规则粒度不够。

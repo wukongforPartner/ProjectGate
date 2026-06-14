@@ -2,6 +2,7 @@
 from __future__ import annotations
 import argparse, json, pathlib, re
 from datetime import datetime, timezone
+from projectgate_autocapture import create_incident_and_candidate, detect_observation_issues, safe
 
 MUTATING_PATTERNS = [
     r'\bgit\s+add\b', r'\bgit\s+commit\b', r'\bgit\s+push\b', r'\bgit\s+checkout\b',
@@ -57,7 +58,35 @@ def main() -> int:
         for pat in MUTATING_PATTERNS:
             if re.search(pat, text, flags=re.I):
                 reasons.append(f'forbidden mutating/destructive action pattern in output: {pat}')
+        observation_issues = detect_observation_issues(text)
+        for issue in observation_issues:
+            if issue.get('severity') == 'fail':
+                reasons.append('observation issue: ' + issue.get('title', 'unknown'))
         if reasons:
+            symptom = ' | '.join(reasons)
+            try:
+                create_incident_and_candidate(
+                    taskrun_path,
+                    incident_id='AUTO-STAGE-GATE-' + safe(args.stage),
+                    title='Stage gate failed: ' + args.stage,
+                    symptom=symptom,
+                    rule_id='PG-STAGE-GATE-' + safe(args.stage).upper() + '-FAIL-001',
+                    triggers=[args.stage.lower(), str((taskrun.get('task') or {}).get('type') or 'unknown_task')],
+                    on_fail='REPAIR_AND_RECHECK',
+                )
+                for issue in observation_issues:
+                    create_incident_and_candidate(
+                        taskrun_path,
+                        incident_id='AUTO-' + safe(issue.get('ruleId','OBSERVATION')),
+                        title=issue.get('title','Observation issue'),
+                        symptom=issue.get('symptom',''),
+                        rule_id=issue.get('ruleId','PG-OBSERVATION-ISSUE-001'),
+                        triggers=issue.get('trigger', []),
+                        on_fail='REPAIR_AND_RECHECK',
+                    )
+                taskrun = load_taskrun(taskrun_path)
+            except Exception as capture_exc:
+                reasons.append('auto incident capture failed: ' + str(capture_exc))
             append_gate(taskrun, args.stage, 'FAIL', reasons, 'REPAIR_AND_RECHECK', str(output_path))
             save_taskrun(taskrun_path, taskrun)
             print('RESULT=FAIL')
