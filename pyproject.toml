@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "projectgate-alpha"
-version = "0.4.3"
+version = "0.4.5"
 description = "AI workflow evidence layer for ProjectGate-controlled tasks."
 readme = "README.md"
 requires-python = ">=3.10"

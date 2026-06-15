@@ -317,14 +317,14 @@ Alpha v0.2.0 adds Runtime Gate support. SOPs and KnownBugRules are no longer pas
 
 Alpha v0.3.0 adds knowledge routing and learning loops. `L / M / H` now controls SOP / KnownBugRule selection scope, not just cost. Successful reusable TaskRuns can create SOP candidates. Failures can create KnownBugRule candidates. Candidates require owner approval before becoming active.
 
-## ProjectGate Auto Capture v0.4.3
+## ProjectGate Auto Capture v0.4.5
 
-Alpha v0.4.3 adds automatic learning-loop capture. Stage gate / delivery check failures automatically create incidents and KnownBugRule candidates. Successful delivery checks automatically create SOP candidates. The owner only approves or rejects candidates instead of manually writing them. If a similar rule already exists, ProjectGate records whether the active rule was not selected, selected but not enforced, or too coarse.
+Alpha v0.4.5 adds automatic learning-loop capture. Stage gate / delivery check failures automatically create incidents and KnownBugRule candidates. Successful delivery checks automatically create SOP candidates. The owner only approves or rejects candidates instead of manually writing them. If a similar rule already exists, ProjectGate records whether the active rule was not selected, selected but not enforced, or too coarse.
 
 
-## v0.4.3 Philosophy Docs
+## v0.4.5 Philosophy Docs
 
-ProjectGate v0.4.3 adds philosophy and implementation-map documents.
+ProjectGate v0.4.5 adds philosophy and implementation-map documents.
 
 New docs:
 

@@ -59,12 +59,12 @@ Alpha v0.2.0 新增 Runtime Gate：SOP 和 KnownBugRules 不再只是文档结�
 
 Alpha v0.3.0 新增知识路由与沉淀闭环：`L / M / H` 不再只是成本标签，也决定 SOP / KnownBugRule 的选择范围。成功且可复用的 TaskRun 可以生成 SOP candidate；失败事故可以生成 KnownBugRule candidate；candidate 必须 owner 批准后才进入 active。
 
-## ProjectGate Auto Capture v0.4.3
+## ProjectGate Auto Capture v0.4.5
 
-Alpha v0.4.3 新增自动沉淀闭环：stage gate / delivery check 失败会自动生成 incident 和 KnownBugRule candidate；delivery check 成功会自动生成 SOP candidate。owner 只负责 approve / reject，不再负责手写候选规则。若已有同类规则，系统会记录是 active 规则未被选中、已选中但未执行、还是规则粒度不够。
+Alpha v0.4.5 新增自动沉淀闭环：stage gate / delivery check 失败会自动生成 incident 和 KnownBugRule candidate；delivery check 成功会自动生成 SOP candidate。owner 只负责 approve / reject，不再负责手写候选规则。若已有同类规则，系统会记录是 active 规则未被选中、已选中但未执行、还是规则粒度不够。
 
 
-## Operator Workflow v0.4.3
+## Operator Workflow v0.4.5
 
 - 新增 candidate 生命周期工具，支持列出、查看、批准、拒绝、合并 SOP / KnownBugRule candidates。
 - 新增 Project Pack 管理工具，支持 pack info、validate、export、controlled install。
@@ -73,9 +73,9 @@ Alpha v0.4.3 新增自动沉淀闭环：stage gate / delivery check 失败会自
 - 新增 `pg exec`，让 ProjectGate 受控命令自动写执行日志并运行 observation gate。
 
 
-## v0.4.3 Packaging and Test Foundation
+## v0.4.5 Packaging and Test Foundation
 
-ProjectGate v0.4.3 增加 Python package 入口与自动化测试基础。
+ProjectGate v0.4.5 增加 Python package 入口与自动化测试基础。
 
 新增：
 

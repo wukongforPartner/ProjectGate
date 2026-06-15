@@ -20,7 +20,7 @@ ProjectGate cannot yet guarantee interception of every action taken by an extern
 
 ProjectGate installers and adapters must not delete arbitrary directories.
 
-Beginning in v0.4.3, managed replacements are restricted:
+Beginning in v0.4.5, managed replacements are restricted:
 
 - overwrite targets must be non-root, non-home, and sufficiently deep paths
 - overwrite targets must be inside the intended workspace when applicable
