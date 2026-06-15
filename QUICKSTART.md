@@ -22,19 +22,16 @@ The AI works with facts, stages, reports, and owner decisions instead of improvi
 - A project folder
 - A folder containing your project docs / SOP / rules / incidents
 
-## Step 1: Extract the package
+## Step 1: Get ProjectGate
 
-Example:
-
-```powershell
-D:\ProjectGate_Alpha_v0_1_1
-```
-
-Open PowerShell there:
+Clone the public repository:
 
 ```powershell
-cd "D:\ProjectGate_Alpha_v0_1_1"
+git clone https://github.com/wukongforPartner/ProjectGate.git
+cd ProjectGate
 ```
+
+If you downloaded a release zip instead, extract it and open PowerShell from the extracted directory.
 
 ## Step 2: Run local self-test
 

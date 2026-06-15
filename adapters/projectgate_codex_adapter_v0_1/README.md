@@ -14,11 +14,13 @@ Primary docs use `-p L`, `-p M`, `-p H`.
 
 ## Build
 
+From the ProjectGate repository root:
+
 ```powershell
-python projectgate_codex_adapter.py build `
-  --core-root "E:\DreamStoryTools\ProjectGate\projectgate_core_v0_1" `
-  --project-pack "E:\DreamStoryTools\ProjectGate\dreamstory_project_pack_v0_1" `
-  --out "E:\DreamStoryTools\ProjectGate\compiled\projectgate_dreamstory_codex_pack_v0_1"
+python ".\adapters\projectgate_codex_adapter_v0_1\projectgate_codex_adapter.py" build `
+  --core-root ".\core\projectgate_core_v0_1" `
+  --project-pack ".\examples\dreamstory_project_pack_v0_1" `
+  --out ".\compiled\projectgate_dreamstory_codex_pack_v0_1"
 ```
 
 ## Install generated pack

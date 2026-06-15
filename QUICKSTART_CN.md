@@ -22,19 +22,16 @@ AI 不再临场发挥，而是按事实、阶段、报告和 owner decision 工�
 - 一个项目目录
 - 一个包含项目文档 / SOP / 规则 / 事故记录的文件夹
 
-## 第 1 步：解压
+## 第 1 步：获取 ProjectGate
 
-例如：
-
-```powershell
-D:\ProjectGate_Alpha_v0_1_1
-```
-
-进入目录：
+克隆公开仓库：
 
 ```powershell
-cd "D:\ProjectGate_Alpha_v0_1_1"
+git clone https://github.com/wukongforPartner/ProjectGate.git
+cd ProjectGate
 ```
+
+如果你下载的是 release zip，先解压，然后从解压后的目录打开 PowerShell。
 
 ## 第 2 步：本地自测
 
