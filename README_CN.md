@@ -6,7 +6,7 @@ ProjectGate 是一个 AI 工作流门禁系统，用来把不可靠的 AI 输出
 
 它要求 AI 协作必须经过事实、SOP、KnownBugRules、运行时门禁和可审查的 TaskRun 证据。
 
-**当前 Alpha：** v0.4.5
+**当前 Alpha：** v0.4.6
 
 ## 从这里开始
 
@@ -162,3 +162,12 @@ ProjectGate v0.4.5 将公开首页与当前魔方模型定位对齐。
 - README 直接以 `让你的 AI 强大 10^79` 开场。
 - 魔方模型说明直接跟在标题下方。
 - 首屏说明 ProjectGate 是面向证据化执行路径的 AI 工作流门禁系统。
+
+
+## v0.4.6 文档路径清理
+
+ProjectGate v0.4.6 移除公开文档中的私有本地路径。
+
+- 快速开始文档现在优先指向公开 GitHub 仓库。
+- Codex adapter README 改为使用仓库相对路径，不再使用本地机器路径。
+- 没有 runtime 行为变化。

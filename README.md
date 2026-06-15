@@ -6,7 +6,7 @@ ProjectGate is an AI workflow gate system that turns unreliable AI output into e
 
 It forces AI-assisted work through facts, SOPs, known bug rules, runtime gates, and reviewable TaskRun evidence.
 
-**Current alpha:** v0.4.5
+**Current alpha:** v0.4.6
 
 ## Start here
 
@@ -166,3 +166,12 @@ ProjectGate v0.4.5 aligns the public homepage with the current Cube Model positi
 - The README now opens directly with `Make your AI 10^79× stronger`.
 - The Cube Model explanation is linked immediately under the headline.
 - The first screen now describes ProjectGate as an AI workflow gate system for evidence-backed execution.
+
+
+## v0.4.6 Documentation Hygiene
+
+ProjectGate v0.4.6 removes private local paths from public documentation.
+
+- Quick Start now points first-time users to the public GitHub repository.
+- The Codex adapter README now uses repository-relative paths instead of local machine paths.
+- No runtime behavior changes.
