@@ -1,3 +1,5 @@
+# 让你的 AI 强大 10^79
+
 # ProjectGate Alpha v0.4.3
 
 ProjectGate 是一个面向 AI 协作的项目治理层。它把项目文档、SOP、规则和事故经验编译成 AI 可以遵守的工作流。

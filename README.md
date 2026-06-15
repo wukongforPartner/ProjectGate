@@ -1,3 +1,5 @@
+# Make your AI 10^79× stronger
+
 # ProjectGate Alpha v0.4.3
 
 ProjectGate is a project-agnostic governance layer for AI-assisted work.
