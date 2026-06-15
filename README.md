@@ -1,4 +1,4 @@
-# ProjectGate Alpha v0.4.2
+# ProjectGate Alpha v0.4.3
 
 ProjectGate is a project-agnostic governance layer for AI-assisted work.
 
@@ -82,12 +82,12 @@ Alpha v0.2.0 adds Runtime Gate support. SOPs and KnownBugRules are no longer pas
 
 Alpha v0.3.0 adds knowledge routing and learning loops. `L / M / H` now controls SOP / KnownBugRule selection scope, not just cost. Successful reusable TaskRuns can create SOP candidates. Failures can create KnownBugRule candidates. Candidates require owner approval before becoming active.
 
-## ProjectGate Auto Capture v0.4.2
+## ProjectGate Auto Capture v0.4.3
 
-Alpha v0.4.2 adds automatic learning-loop capture. Stage gate / delivery check failures automatically create incidents and KnownBugRule candidates. Successful delivery checks automatically create SOP candidates. The owner only approves or rejects candidates instead of manually writing them. If a similar rule already exists, ProjectGate records whether the active rule was not selected, selected but not enforced, or too coarse.
+Alpha v0.4.3 adds automatic learning-loop capture. Stage gate / delivery check failures automatically create incidents and KnownBugRule candidates. Successful delivery checks automatically create SOP candidates. The owner only approves or rejects candidates instead of manually writing them. If a similar rule already exists, ProjectGate records whether the active rule was not selected, selected but not enforced, or too coarse.
 
 
-## Operator Workflow v0.4.2
+## Operator Workflow v0.4.3
 
 - Added candidate lifecycle tooling for listing, showing, approving, rejecting, and merging SOP / KnownBugRule candidates.
 - Added Project Pack manager for pack info, validation, export, and controlled install.
@@ -95,9 +95,9 @@ Alpha v0.4.2 adds automatic learning-loop capture. Stage gate / delivery check f
 - Added root `pg.py` and `pg.bat` entrypoints for shorter local commands.
 - Added `pg exec` so ProjectGate-controlled commands can automatically write execution logs and run observation gate.
 
-## v0.4.2 Safety Hardening
+## v0.4.3 Safety Hardening
 
-ProjectGate v0.4.2 clarifies the current enforcement boundary and hardens installer behavior.
+ProjectGate v0.4.3 clarifies the current enforcement boundary and hardens installer behavior.
 
 ProjectGate is an AI workflow evidence layer for ProjectGate-controlled flows. It is not yet an OS-level sandbox or enterprise compliance platform.
 
@@ -110,9 +110,9 @@ Safety changes:
 - `SECURITY.md` documents the current enforcement boundary and Alpha limitations.
 
 
-## v0.4.2 Packaging and Test Foundation
+## v0.4.3 Packaging and Test Foundation
 
-ProjectGate v0.4.2 adds a Python package entry point and automated test foundation.
+ProjectGate v0.4.3 adds a Python package entry point and automated test foundation.
 
 New files:
 
@@ -138,3 +138,16 @@ Run:
 ```bash
 python -m unittest discover -s tests
 ```
+
+
+## v0.4.3 Philosophy Docs
+
+ProjectGate v0.4.3 adds philosophy and implementation-map documents.
+
+New docs:
+
+- `docs/WHY_GATES_MATTER.md`
+- `docs/CUBE_MODEL.md`
+- `docs/IMPLEMENTATION_MAP.md`
+
+These documents explain why gates matter as search-space reduction, present the Cube Model without tying it to a specific private project, and map the philosophy to current ProjectGate implementation files.

@@ -122,7 +122,7 @@ def run(cmd: list[str]) -> int:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description='ProjectGate Alpha v0.4.2 installer and bootstrapper.')
+    ap = argparse.ArgumentParser(description='ProjectGate Alpha v0.4.3 installer and bootstrapper.')
     ap.add_argument('--dry-run', action='store_true')
     ap.add_argument('--install', action='store_true')
     ap.add_argument('--workspace-root', required=True, help='Where to install ProjectGate workspace. User-chosen path.')

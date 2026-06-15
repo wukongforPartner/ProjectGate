@@ -1,4 +1,4 @@
-# ProjectGate Alpha v0.4.2
+# ProjectGate Alpha v0.4.3
 
 ProjectGate 是一个面向 AI 协作的项目治理层。它把项目文档、SOP、规则和事故经验编译成 AI 可以遵守的工作流。
 
@@ -75,12 +75,12 @@ Alpha v0.2.0 新增 Runtime Gate：SOP 和 KnownBugRules 不再只是文档结�
 
 Alpha v0.3.0 新增知识路由与沉淀闭环：`L / M / H` 不再只是成本标签，也决定 SOP / KnownBugRule 的选择范围。成功且可复用的 TaskRun 可以生成 SOP candidate；失败事故可以生成 KnownBugRule candidate；candidate 必须 owner 批准后才进入 active。
 
-## ProjectGate Auto Capture v0.4.2
+## ProjectGate Auto Capture v0.4.3
 
-Alpha v0.4.2 新增自动沉淀闭环：stage gate / delivery check 失败会自动生成 incident 和 KnownBugRule candidate；delivery check 成功会自动生成 SOP candidate。owner 只负责 approve / reject，不再负责手写候选规则。若已有同类规则，系统会记录是 active 规则未被选中、已选中但未执行、还是规则粒度不够。
+Alpha v0.4.3 新增自动沉淀闭环：stage gate / delivery check 失败会自动生成 incident 和 KnownBugRule candidate；delivery check 成功会自动生成 SOP candidate。owner 只负责 approve / reject，不再负责手写候选规则。若已有同类规则，系统会记录是 active 规则未被选中、已选中但未执行、还是规则粒度不够。
 
 
-## Operator Workflow v0.4.2
+## Operator Workflow v0.4.3
 
 - 新增 candidate 生命周期工具，支持列出、查看、批准、拒绝、合并 SOP / KnownBugRule candidates。
 - 新增 Project Pack 管理工具，支持 pack info、validate、export、controlled install。
@@ -88,9 +88,9 @@ Alpha v0.4.2 新增自动沉淀闭环：stage gate / delivery check 失败会自
 - 新增根目录 `pg.py` 与 `pg.bat`，减少本地长命令。
 - 新增 `pg exec`，让 ProjectGate 受控命令自动写执行日志并运行 observation gate。
 
-## v0.4.2 安全硬化
+## v0.4.3 安全硬化
 
-ProjectGate v0.4.2 明确当前执行边界，并加固安装器行为。
+ProjectGate v0.4.3 明确当前执行边界，并加固安装器行为。
 
 ProjectGate 是 ProjectGate 受控流程内的 AI 工作流证据层。它目前还不是操作系统级沙箱，也不是企业合规平台。
 
@@ -103,9 +103,9 @@ ProjectGate 是 ProjectGate 受控流程内的 AI 工作流证据层。它目前
 - 新增 `SECURITY.md`，说明当前执行边界与 Alpha 限制。
 
 
-## v0.4.2 Packaging and Test Foundation
+## v0.4.3 Packaging and Test Foundation
 
-ProjectGate v0.4.2 增加 Python package 入口与自动化测试基础。
+ProjectGate v0.4.3 增加 Python package 入口与自动化测试基础。
 
 新增：
 
@@ -131,3 +131,16 @@ ProjectGate v0.4.2 增加 Python package 入口与自动化测试基础。
 ```powershell
 python -m unittest discover -s tests
 ```
+
+
+## v0.4.3 理念文档
+
+ProjectGate v0.4.3 增加理念文档与实现映射文档。
+
+新增文档：
+
+- `docs/WHY_GATES_MATTER_CN.md`
+- `docs/CUBE_MODEL_CN.md`
+- `docs/IMPLEMENTATION_MAP_CN.md`
+
+这些文档解释门禁为什么是搜索空间压缩，以不绑定任何私有项目名称的方式呈现魔方模型，并把理念映射到当前 ProjectGate 真实实现文件。
