@@ -1,4 +1,4 @@
-# ProjectGate Alpha v0.4.1
+# ProjectGate Alpha v0.4.2
 
 ProjectGate 是一个面向 AI 协作的项目治理层。它把项目文档、SOP、规则和事故经验编译成 AI 可以遵守的工作流。
 
@@ -75,12 +75,12 @@ Alpha v0.2.0 新增 Runtime Gate：SOP 和 KnownBugRules 不再只是文档结�
 
 Alpha v0.3.0 新增知识路由与沉淀闭环：`L / M / H` 不再只是成本标签，也决定 SOP / KnownBugRule 的选择范围。成功且可复用的 TaskRun 可以生成 SOP candidate；失败事故可以生成 KnownBugRule candidate；candidate 必须 owner 批准后才进入 active。
 
-## ProjectGate Auto Capture v0.4.1
+## ProjectGate Auto Capture v0.4.2
 
-Alpha v0.4.1 新增自动沉淀闭环：stage gate / delivery check 失败会自动生成 incident 和 KnownBugRule candidate；delivery check 成功会自动生成 SOP candidate。owner 只负责 approve / reject，不再负责手写候选规则。若已有同类规则，系统会记录是 active 规则未被选中、已选中但未执行、还是规则粒度不够。
+Alpha v0.4.2 新增自动沉淀闭环：stage gate / delivery check 失败会自动生成 incident 和 KnownBugRule candidate；delivery check 成功会自动生成 SOP candidate。owner 只负责 approve / reject，不再负责手写候选规则。若已有同类规则，系统会记录是 active 规则未被选中、已选中但未执行、还是规则粒度不够。
 
 
-## Operator Workflow v0.4.1
+## Operator Workflow v0.4.2
 
 - 新增 candidate 生命周期工具，支持列出、查看、批准、拒绝、合并 SOP / KnownBugRule candidates。
 - 新增 Project Pack 管理工具，支持 pack info、validate、export、controlled install。
@@ -88,9 +88,9 @@ Alpha v0.4.1 新增自动沉淀闭环：stage gate / delivery check 失败会自
 - 新增根目录 `pg.py` 与 `pg.bat`，减少本地长命令。
 - 新增 `pg exec`，让 ProjectGate 受控命令自动写执行日志并运行 observation gate。
 
-## v0.4.1 安全硬化
+## v0.4.2 安全硬化
 
-ProjectGate v0.4.1 明确当前执行边界，并加固安装器行为。
+ProjectGate v0.4.2 明确当前执行边界，并加固安装器行为。
 
 ProjectGate 是 ProjectGate 受控流程内的 AI 工作流证据层。它目前还不是操作系统级沙箱，也不是企业合规平台。
 
@@ -101,3 +101,33 @@ ProjectGate 是 ProjectGate 受控流程内的 AI 工作流证据层。它目前
 - 覆盖已有管理目录前会先备份。
 - 增加 workspace-root 与目标路径深度检查，降低误删风险。
 - 新增 `SECURITY.md`，说明当前执行边界与 Alpha 限制。
+
+
+## v0.4.2 Packaging and Test Foundation
+
+ProjectGate v0.4.2 增加 Python package 入口与自动化测试基础。
+
+新增：
+
+- `pyproject.toml`
+- `projectgate/cli.py`
+- `projectgate/__init__.py`
+- `tests/test_projectgate_package_and_runtime.py`
+
+`pg.py` 现在是兼容 shim，不再直接硬编码 runtime 文件路径。正式入口通过 `projectgate.cli:main` 路由。
+
+测试基础覆盖：
+
+- package / pg 入口
+- 安装器安全拒绝
+- managed backup
+- candidate lifecycle
+- runtime start / stage / delivery
+- observation gate
+- pg exec
+
+运行：
+
+```powershell
+python -m unittest discover -s tests
+```

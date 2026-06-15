@@ -23,6 +23,10 @@ def main() -> int:
     'core/projectgate_core_v0_1/runtime/projectgate_taskrun_continuity_gate.py',
     'pg.bat',
     'pg.py',
+    'pyproject.toml',
+    'projectgate/__init__.py',
+    'projectgate/cli.py',
+    'tests/test_projectgate_package_and_runtime.py',
     'core/projectgate_core_v0_1/runtime/projectgate_cli.py',
     'core/projectgate_core_v0_1/runtime/projectgate_pack_manager.py',
     'core/projectgate_core_v0_1/runtime/projectgate_candidate_lifecycle.py',
@@ -46,6 +50,9 @@ def main() -> int:
         print('FAIL_REASON=' + '; '.join(errors))
         return 1
     code = run([sys.executable, str(ROOT / 'core/projectgate_core_v0_1/scripts/projectgate_core_selftest.py')])
+    if code != 0:
+        return code
+    code = run([sys.executable, '-m', 'projectgate.cli', 'pack', 'validate', '--project-pack', str(ROOT / 'examples/dreamstory_project_pack_v0_1')])
     if code != 0:
         return code
     tmp = pathlib.Path(tempfile.mkdtemp(prefix='projectgate_alpha_test_'))

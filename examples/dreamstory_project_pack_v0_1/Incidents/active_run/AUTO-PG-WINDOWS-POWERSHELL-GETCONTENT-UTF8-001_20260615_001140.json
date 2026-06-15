@@ -1,0 +1,31 @@
+{
+  "schema": "projectgate_incident_v0_3_1",
+  "incidentId": "AUTO-PG-WINDOWS-POWERSHELL-GETCONTENT-UTF8-001",
+  "title": "PowerShell Get-Content should specify UTF-8 for ProjectGate docs",
+  "createdUtc": "2026-06-15T00:11:40.784230+00:00",
+  "symptom": "Observation includes Get-Content without explicit -Encoding UTF8.",
+  "taskrun": "/tmp/pg_test_runtime_1mnrd273/runs/20260615_001132_486365_dreamstory_runtime_fact_entry_map/TaskRun.json",
+  "triggers": [
+    "windows_utf8",
+    "powershell",
+    "get_content"
+  ],
+  "existingRuleAnalysis": {
+    "matchType": "exact",
+    "rule": {
+      "state": "candidates",
+      "path": "/mnt/data/pgbuild_v042/ProjectGate_Alpha_v0_4_2/examples/dreamstory_project_pack_v0_1/KnownBugRules/candidates/PG-WINDOWS-POWERSHELL-GETCONTENT-UTF8-001_20260615_001056.json",
+      "bugId": "PG-WINDOWS-POWERSHELL-GETCONTENT-UTF8-001",
+      "title": "PowerShell Get-Content should specify UTF-8 for ProjectGate docs",
+      "trigger": [
+        "windows_utf8",
+        "powershell",
+        "get_content"
+      ],
+      "symptom": "Observation includes Get-Content without explicit -Encoding UTF8."
+    },
+    "analysis": "DUPLICATE_CANDIDATE_EXISTS",
+    "meaning": "A candidate already exists. Do not generate another identical rule; link this incident to the existing candidate."
+  },
+  "status": "auto_captured"
+}

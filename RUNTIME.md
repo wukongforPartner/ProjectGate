@@ -34,26 +34,26 @@ Gate failure means `REPAIR_AND_RECHECK`, not final termination.
 
 Alpha v0.3.0 adds knowledge routing and learning loops. `L / M / H` now controls SOP / KnownBugRule selection scope, not just cost. Successful reusable TaskRuns can create SOP candidates. Failures can create KnownBugRule candidates. Candidates require owner approval before becoming active.
 
-## ProjectGate Auto Capture v0.4.1
+## ProjectGate Auto Capture v0.4.2
 
-Alpha v0.4.1 adds automatic learning-loop capture. Stage gate / delivery check failures automatically create incidents and KnownBugRule candidates. Successful delivery checks automatically create SOP candidates. The owner only approves or rejects candidates instead of manually writing them. If a similar rule already exists, ProjectGate records whether the active rule was not selected, selected but not enforced, or too coarse.
+Alpha v0.4.2 adds automatic learning-loop capture. Stage gate / delivery check failures automatically create incidents and KnownBugRule candidates. Successful delivery checks automatically create SOP candidates. The owner only approves or rejects candidates instead of manually writing them. If a similar rule already exists, ProjectGate records whether the active rule was not selected, selected but not enforced, or too coarse.
 
 
-## Auto Capture v0.4.1
+## Auto Capture v0.4.2
 
 - TaskRun directories are now allocated with microsecond precision and collision retry.
 - `projectgate_task_start.py` no longer fails when two same-type runs start within the same second.
 - Pre-TaskRun failures can emit a pretask incident and a KnownBugRule candidate when a run root is available.
 
 
-## TaskRun Continuity v0.4.1
+## TaskRun Continuity v0.4.2
 
 - ProjectGate can detect multiple distinct primary TaskRun paths in a single observed goal transcript.
 - `projectgate_taskrun_continuity_gate.py` records `PG-RUNTIME-SINGLE-PRIMARY-TASKRUN-001` when one goal appears to switch TaskRuns without an explicit child-run relationship.
 - This prevents reports, stage gates, and delivery checks from silently binding to a different TaskRun than the one created at goal start.
 
 
-## Operator Workflow v0.4.1
+## Operator Workflow v0.4.2
 
 - Added candidate lifecycle tooling for listing, showing, approving, rejecting, and merging SOP / KnownBugRule candidates.
 - Added Project Pack manager for pack info, validation, export, and controlled install.

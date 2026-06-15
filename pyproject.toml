@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "projectgate-alpha"
+version = "0.4.2"
+description = "AI workflow evidence layer for ProjectGate-controlled tasks."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "wukongforPartner" }]
+keywords = ["ai", "workflow", "governance", "agent", "sop", "evidence"]
+
+[project.scripts]
+pg = "projectgate.cli:main"
+
+[tool.setuptools]
+packages = ["projectgate"]
