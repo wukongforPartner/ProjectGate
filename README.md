@@ -1,4 +1,9 @@
+# ProjectGate
+
 # Make your AI 10^79× stronger
+
+[Why this works](docs/CUBE_MODEL.md)
+
 
 # ProjectGate Alpha v0.4.3
 

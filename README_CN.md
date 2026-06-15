@@ -1,4 +1,8 @@
+# ProjectGate
+
 # 让你的 AI 强大 10^79
+
+[为什么这成立](docs/CUBE_MODEL_CN.md)
 
 # ProjectGate Alpha v0.4.3
 
