@@ -10,10 +10,75 @@ def safe(text: str) -> str:
     return SAFE_RE.sub('_', text.strip())[:80].strip('_') or 'project'
 
 
-def copytree(src: pathlib.Path, dst: pathlib.Path) -> None:
+MARKER = '.projectgate-managed.json'
+
+
+def utc_stamp() -> str:
+    return datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')
+
+
+def is_relative_to(child: pathlib.Path, parent: pathlib.Path) -> bool:
+    try:
+        child.resolve().relative_to(parent.resolve())
+        return True
+    except ValueError:
+        return False
+
+
+def marker_payload(kind: str, dst: pathlib.Path) -> dict:
+    return {
+        'schema': 'projectgate_managed_directory_v0_4_1',
+        'managedBy': 'ProjectGate',
+        'kind': kind,
+        'destination': str(dst.resolve()),
+        'createdUtc': datetime.now(timezone.utc).isoformat(),
+    }
+
+
+def looks_like_legacy_codex_pack(path: pathlib.Path) -> bool:
+    return (path / 'PACK_MANIFEST.json').exists() and (path / 'projectgate' / 'SKILL.md').exists()
+
+
+def validate_replace_target(dst: pathlib.Path, kind: str) -> None:
+    dst = dst.resolve()
+    home = pathlib.Path.home().resolve()
+    forbidden = {pathlib.Path(dst.anchor).resolve(), home}
+    if dst in forbidden:
+        raise RuntimeError(f'unsafe replace target: {dst}')
+    if len(dst.parts) < 3:
+        raise RuntimeError(f'replace target too shallow: {dst}')
     if dst.exists():
-        shutil.rmtree(dst)
-    shutil.copytree(src, dst)
+        marker = dst / MARKER
+        if not marker.exists() and kind == 'codex_pack' and not looks_like_legacy_codex_pack(dst):
+            raise RuntimeError(f'refusing to replace unmarked non-ProjectGate output: {dst}')
+        if not marker.exists() and kind != 'codex_pack':
+            raise RuntimeError(f'refusing to replace unmarked non-ProjectGate output: {dst}')
+
+
+def backup_existing(dst: pathlib.Path) -> pathlib.Path | None:
+    if not dst.exists():
+        return None
+    backup = dst.with_name(dst.name + '_backup_before_replace_' + utc_stamp())
+    if backup.exists():
+        raise RuntimeError(f'backup path already exists: {backup}')
+    shutil.move(str(dst), str(backup))
+    return backup
+
+
+def prepare_managed_output(dst: pathlib.Path, kind: str) -> pathlib.Path | None:
+    validate_replace_target(dst, kind)
+    backup = backup_existing(dst)
+    dst.mkdir(parents=True, exist_ok=True)
+    (dst / MARKER).write_text(json.dumps(marker_payload(kind, dst), ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    if backup:
+        print('BACKUP_DIR=' + str(backup))
+    return backup
+
+
+def copytree(src: pathlib.Path, dst: pathlib.Path) -> None:
+    prepare_managed_output(dst, 'copytree')
+    copytree_merge(src, dst)
+    (dst / MARKER).write_text(json.dumps(marker_payload('copytree', dst), ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 
 
 def copytree_merge(src: pathlib.Path, dst: pathlib.Path) -> None:
@@ -208,14 +273,51 @@ SKILL_SRC = ROOT / 'projectgate'
 PROJECT_AGENTS_TEMPLATE = SKILL_SRC / 'references' / 'project' / 'AGENTS.md.template'
 
 
+MARKER = '.projectgate-managed.json'
+
+
+def looks_like_projectgate_skill(dst: pathlib.Path) -> bool:
+    return (dst / 'SKILL.md').exists() and (dst / 'references' / 'project' / 'project_manifest.json').exists()
+
+
+def marker_payload(dst: pathlib.Path) -> str:
+    return '{\n  "schema": "projectgate_managed_directory_v0_4_1",\n  "managedBy": "ProjectGate",\n  "kind": "codex_skill",\n  "destination": "' + str(dst).replace('\\', '/') + '"\n}\n'
+
+
+def validate_skill_target(dst: pathlib.Path):
+    dst = dst.resolve()
+    home = pathlib.Path.home().resolve()
+    if dst == pathlib.Path(dst.anchor).resolve() or dst == home:
+        raise RuntimeError(f'unsafe skill install target: {dst}')
+    if len(dst.parts) < 4:
+        raise RuntimeError(f'skill install target too shallow: {dst}')
+    if dst.exists() and not (dst / MARKER).exists() and not looks_like_projectgate_skill(dst):
+        raise RuntimeError(f'refusing to replace unmarked non-ProjectGate skill directory: {dst}')
+
+
+def backup_existing(dst: pathlib.Path):
+    if not dst.exists():
+        return None
+    backup = dst.with_name(dst.name + '_backup_before_replace')
+    i = 1
+    while backup.exists():
+        i += 1
+        backup = dst.with_name(dst.name + '_backup_before_replace_' + str(i))
+    shutil.move(str(dst), str(backup))
+    return backup
+
+
 def copytree_clean(src: pathlib.Path, dst: pathlib.Path, dry_run: bool):
+    validate_skill_target(dst)
     if dry_run:
-        print(f'DRY_RUN copy {src} -> {dst}')
+        print(f'DRY_RUN copy-managed {src} -> {dst}')
         return
-    if dst.exists():
-        shutil.rmtree(dst)
+    backup = backup_existing(dst)
     dst.parent.mkdir(parents=True, exist_ok=True)
     shutil.copytree(src, dst)
+    (dst / MARKER).write_text(marker_payload(dst), encoding='utf-8')
+    if backup:
+        print('BACKUP_DIR=' + str(backup))
 
 
 def install_project_agents_md(project_root: pathlib.Path, dry_run: bool, force: bool):
@@ -288,8 +390,7 @@ def build(args) -> int:
     pack = pathlib.Path(args.project_pack).resolve()
     out = pathlib.Path(args.out).resolve()
     manifest = read_manifest(pack)
-    if out.exists():
-        shutil.rmtree(out)
+    prepare_managed_output(out, 'codex_pack')
     (out / 'projectgate' / 'references' / 'core').mkdir(parents=True)
     (out / 'projectgate' / 'references' / 'project').mkdir(parents=True)
     # Core references only, not whole core package.
@@ -315,6 +416,7 @@ def build(args) -> int:
         'profileSyntax': ['-p L', '-p M', '-p H', '--profile L', '--profile M', '--profile H']
     }
     (out / 'PACK_MANIFEST.json').write_text(json.dumps(package_manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8', newline='\n')
+    (out / MARKER).write_text(json.dumps(marker_payload('codex_pack', out), ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print('RESULT=PASS')
     print('CODEX_PACK=' + str(out))
     return 0

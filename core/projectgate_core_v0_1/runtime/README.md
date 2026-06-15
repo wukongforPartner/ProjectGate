@@ -14,26 +14,26 @@ If the gate fails, the next action is `REPAIR_AND_RECHECK`, not silent terminati
 
 A final deliverable is not considered valid unless `projectgate_delivery_check.py` confirms that SOPs/rules were loaded and at least one passing gate exists.
 
-## Auto Capture v0.4.0
+## Auto Capture v0.4.1
 
 Failures no longer only return FAIL. Runtime automatically captures incidents and creates KnownBugRule candidates. Successful delivery checks automatically create SOP candidates. Candidates require owner approval before becoming active.
 
 
-## Auto Capture v0.4.0
+## Auto Capture v0.4.1
 
 - TaskRun directories are now allocated with microsecond precision and collision retry.
 - `projectgate_task_start.py` no longer fails when two same-type runs start within the same second.
 - Pre-TaskRun failures can emit a pretask incident and a KnownBugRule candidate when a run root is available.
 
 
-## TaskRun Continuity v0.4.0
+## TaskRun Continuity v0.4.1
 
 - ProjectGate can detect multiple distinct primary TaskRun paths in a single observed goal transcript.
 - `projectgate_taskrun_continuity_gate.py` records `PG-RUNTIME-SINGLE-PRIMARY-TASKRUN-001` when one goal appears to switch TaskRuns without an explicit child-run relationship.
 - This prevents reports, stage gates, and delivery checks from silently binding to a different TaskRun than the one created at goal start.
 
 
-## Operator Workflow v0.4.0
+## Operator Workflow v0.4.1
 
 - Added candidate lifecycle tooling for listing, showing, approving, rejecting, and merging SOP / KnownBugRule candidates.
 - Added Project Pack manager for pack info, validation, export, and controlled install.
