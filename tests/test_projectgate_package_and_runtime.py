@@ -123,5 +123,64 @@ class ProjectGatePackageAndRuntimeTests(unittest.TestCase):
             self.assertTrue(any(name.startswith('references/core/') for name in names))
             self.assertFalse(any('__pycache__' in name.split('/') or name.endswith('.pyc') for name in names))
 
+
+    def test_qoderwork_workflow_runner_start_gate_and_delivery(self):
+        with tempfile.TemporaryDirectory(prefix='pg_test_qoderwork_runner_') as td:
+            scratch = pathlib.Path(td)
+            run_root = scratch / 'runs'
+            source_pack = ROOT / 'examples' / 'dreamstory_project_pack_v0_1'
+            project_pack = scratch / 'dreamstory_project_pack_v0_1'
+            shutil.copytree(
+                source_pack,
+                project_pack,
+                ignore=shutil.ignore_patterns('__pycache__', '*.pyc', 'Incidents', 'candidates')
+            )
+            runner = ROOT / 'adapters' / 'projectgate_qoderwork_adapter_v0_1' / 'projectgate_qoderwork_workflow_runner.py'
+            out = run([
+                PY, runner, 'start',
+                '--project-pack', project_pack,
+                '--task-type', 'dreamstory_runtime_fact_entry_map',
+                '--task-title', 'unit qoderwork runner',
+                '-p', 'L',
+                '--run-root', run_root,
+            ])
+            self.assertIn('QODERWORK_RUNNER_START=PASS', out)
+            task_line = [line for line in out.splitlines() if line.startswith('TASKRUN=')][0]
+            input_line = [line for line in out.splitlines() if line.startswith('QODERWORK_INPUT=')][0]
+            taskrun = pathlib.Path(task_line.split('=', 1)[1])
+            self.assertTrue(taskrun.exists())
+            self.assertTrue(pathlib.Path(input_line.split('=', 1)[1]).exists())
+
+            bad_report = taskrun.parent / 'bad_worker_output.md'
+            bad_report.write_text('# bad\n', encoding='utf-8')
+            fail_out = run([PY, runner, 'gate', '--taskrun', taskrun, '--stage', 'READONLY_AUDIT', '--input', bad_report], expect=1)
+            self.assertIn('QODERWORK_REPAIR_INPUT=', fail_out)
+            self.assertFalse((source_pack / 'Incidents').exists(), 'runner test must not write autocapture artifacts into the real DreamStory example pack')
+            self.assertFalse((source_pack / 'KnownBugRules' / 'candidates').exists(), 'runner test must not write KnownBugRule candidates into the real DreamStory example pack')
+            self.assertFalse((source_pack / 'SOPs' / 'candidates').exists(), 'runner test must not write SOP candidates into the real DreamStory example pack')
+
+            good_report = taskrun.parent / 'good_worker_output.md'
+            good_report.write_text(
+                '# good\n\n'
+                'SOP_USED=runtime_fact_entry_map\n'
+                'KNOWN_BUG_RULES_CHECKED=DREAMSTORY-RUNTIME-FACT-SINGLE-ENTRY-001\n'
+                'TASKRUN=' + str(taskrun) + '\n'
+                'STAGE=READONLY_AUDIT\n\n'
+                '## 已确认事实\n- ok\n\n'
+                '## 不能确认事实\n- ok\n\n'
+                '## 风险点\n- ok\n\n'
+                '## 必须停手条件\n- ok\n\n'
+                '## 唯一安全下一步\n- ok\n',
+                encoding='utf-8'
+            )
+            pass_out = run([PY, runner, 'gate', '--taskrun', taskrun, '--stage', 'READONLY_AUDIT', '--input', good_report, '--next-stage', 'FACT_COLLECTION'])
+            self.assertIn('STAGE_GATE=PASS', pass_out)
+            self.assertIn('QODERWORK_NEXT_INPUT=', pass_out)
+
+            delivery_out = run([PY, runner, 'delivery', '--taskrun', taskrun])
+            self.assertIn('DELIVERY_CHECK=PASS', delivery_out)
+            self.assertIn('QODERWORK_RUNNER_DELIVERY=PASS', delivery_out)
+
+
 if __name__ == '__main__':
     unittest.main()
