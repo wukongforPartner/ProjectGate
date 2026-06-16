@@ -2,11 +2,11 @@
 
 [Why this works](docs/CUBE_MODEL.md)
 
-ProjectGate is an AI workflow gate system that turns unreliable AI output into evidence-backed execution.
+ProjectGate is an AI Reality Layer for AI-assisted work.
 
-It forces AI-assisted work through facts, SOPs, known bug rules, runtime gates, and reviewable TaskRun evidence.
+It stops AI agents from acting on unsupported facts by forcing work through TaskRun evidence, SOPs, KnownBugRules, runtime gates, and owner decisions.
 
-**Current alpha:** v0.4.6
+**Current alpha:** v0.4.7
 
 ## Start here
 
@@ -16,6 +16,9 @@ Background and problem statement: `BACKGROUND.md` / `BACKGROUND_CN.md`.
 Read `QUICKSTART.md` first.
 
 中文文档：`QUICKSTART_CN.md`。
+
+Tool integration guide: `docs/TOOL_INTEGRATION_GUIDE.md`.
+中文工具接入指南：`docs/TOOL_INTEGRATION_GUIDE_CN.md`.
 
 For copy-paste commands, see `COMMANDS.md`.
 
@@ -174,4 +177,14 @@ ProjectGate v0.4.6 removes private local paths from public documentation.
 
 - Quick Start now points first-time users to the public GitHub repository.
 - The Codex adapter README now uses repository-relative paths instead of local machine paths.
+- No runtime behavior changes.
+
+## v0.4.7 Tool Integration Guide
+
+ProjectGate v0.4.7 adds a docs-only guide for connecting ProjectGate to more AI tools.
+
+- Added `docs/TOOL_INTEGRATION_GUIDE.md`.
+- Added `docs/TOOL_INTEGRATION_GUIDE_CN.md`.
+- Added tool integration templates for Codex, Claude Code, Cursor, and generic agents.
+- The guide separates enforceable ProjectGate gates from advisory instruction-file integration.
 - No runtime behavior changes.

@@ -2,15 +2,18 @@
 
 [为什么这成立](docs/CUBE_MODEL_CN.md)
 
-ProjectGate 是一个 AI 工作流门禁系统，用来把不可靠的 AI 输出压回有证据的执行路径。
+ProjectGate 是面向 AI 协作的 AI Reality Layer。
 
-它要求 AI 协作必须经过事实、SOP、KnownBugRules、运行时门禁和可审查的 TaskRun 证据。
+它阻止 AI 基于未证实事实继续推进，要求任务必须经过 TaskRun 证据、SOP、KnownBugRules、运行时门禁和 owner decision。
 
-**当前 Alpha：** v0.4.6
+**当前 Alpha：** v0.4.7
 
 ## 从这里开始
 
 第一次使用请先读 `QUICKSTART_CN.md`。
+
+工具接入指南：`docs/TOOL_INTEGRATION_GUIDE_CN.md`。
+英文工具接入指南：`docs/TOOL_INTEGRATION_GUIDE.md`。
 
 需要复制命令时看 `COMMANDS_CN.md`。
 
@@ -170,4 +173,14 @@ ProjectGate v0.4.6 移除公开文档中的私有本地路径。
 
 - 快速开始文档现在优先指向公开 GitHub 仓库。
 - Codex adapter README 改为使用仓库相对路径，不再使用本地机器路径。
+- 没有 runtime 行为变化。
+
+## v0.4.7 工具接入指南
+
+ProjectGate v0.4.7 新增 docs-only 工具接入指南。
+
+- 新增 `docs/TOOL_INTEGRATION_GUIDE_CN.md`。
+- 新增 `docs/TOOL_INTEGRATION_GUIDE.md`。
+- 新增 Codex、Claude Code、Cursor、通用 Agent 的接入模板。
+- 接入指南区分 ProjectGate 可强制的门禁与 instruction-file 层面的建议。
 - 没有 runtime 行为变化。
