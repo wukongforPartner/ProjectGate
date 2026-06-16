@@ -184,3 +184,19 @@ ProjectGate v0.4.7 新增 docs-only 工具接入指南。
 - 新增 Codex、Claude Code、Cursor、通用 Agent 的接入模板。
 - 接入指南区分 ProjectGate 可强制的门禁与 instruction-file 层面的建议。
 - 没有 runtime 行为变化。
+
+## v0.4.8 Workflow State Machine Foundation
+
+ProjectGate v0.4.8 新增第一层静态工作流状态机基础。
+
+本次新增：
+
+- `docs/WORKFLOW_STATE_MACHINE.md`
+- `docs/WORKFLOW_STATE_MACHINE_CN.md`
+- `core/projectgate_core_v0_1/workflow/` 下的静态状态机表
+- `projectgate_workflow_validator.py`
+- workflow state machine 单元测试
+
+关键设计新增是 `InternalRepairLoop`：可内部修复的失败必须留在工作流内部迭代，并记录到 state / gate history，不应该推给 Owner 管理。Owner 只应被请求提供 Owner 独有输入：目标、系统无法获得的事实、权限、风险判断、产品判断、停止或继续决定。
+
+本次还不实现完整 Orchestrator、StateStore、RuleSelector 或 Qoder Hook enforcement layer。v0.4.8 先落地可验证的静态工作流契约。

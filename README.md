@@ -188,3 +188,19 @@ ProjectGate v0.4.7 adds a docs-only guide for connecting ProjectGate to more AI 
 - Added tool integration templates for Codex, Claude Code, Cursor, and generic agents.
 - The guide separates enforceable ProjectGate gates from advisory instruction-file integration.
 - No runtime behavior changes.
+
+## v0.4.8 Workflow State Machine Foundation
+
+ProjectGate v0.4.8 adds the first static Workflow State Machine layer.
+
+This release introduces:
+
+- `docs/WORKFLOW_STATE_MACHINE.md`
+- `docs/WORKFLOW_STATE_MACHINE_CN.md`
+- static workflow tables under `core/projectgate_core_v0_1/workflow/`
+- `projectgate_workflow_validator.py`
+- workflow state machine unit tests
+
+The key design addition is `InternalRepairLoop`: internally repairable failures must stay inside the workflow and be recorded in state / gate history instead of being pushed to the Owner. The Owner should only be asked for Owner-exclusive input: goals, unavailable facts, permissions, risk decisions, product judgment, or stop / continue decisions.
+
+This release does not yet implement the full Orchestrator, StateStore, RuleSelector, or Qoder Hook enforcement layer. It establishes the validated static contract first.
