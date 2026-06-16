@@ -1,3 +1,16 @@
+<!-- PROJECTGATE_HELIOCENTRIC_IDENTITY_START -->
+# ProjectGate · 日心说
+
+面向事实锁定 AI 协作的工作流门禁系统。
+
+“日心说”是 ProjectGate 的存在理由：AI 协作不应围绕流畅输出旋转，而应围绕可验证事实旋转。
+
+- [日心说：ProjectGate 为什么存在](docs/HELIOSCENTRIC_CN.md)
+
+<!-- PROJECTGATE_HELIOCENTRIC_IDENTITY_END -->
+
+---
+
 # 让你的 AI 强大 10^79
 
 [为什么这成立](docs/CUBE_MODEL_CN.md)
@@ -6,7 +19,7 @@ ProjectGate 是面向 AI 协作的 AI Reality Layer。
 
 它阻止 AI 基于未证实事实继续推进，要求任务必须经过 TaskRun 证据、SOP、KnownBugRules、运行时门禁和 owner decision。
 
-**当前 Alpha：** v0.4.7
+**当前 Alpha：** v0.4.8
 
 ## 从这里开始
 

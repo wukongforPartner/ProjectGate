@@ -1,3 +1,16 @@
+<!-- PROJECTGATE_HELIOCENTRIC_IDENTITY_START -->
+# ProjectGate · Heliocentric
+
+Workflow gates for fact-locked AI collaboration.
+
+Heliocentric is the reason ProjectGate exists: AI work should orbit verifiable facts, not fluent guesses.
+
+- [Heliocentric: why ProjectGate exists](docs/HELIOSCENTRIC.md)
+
+<!-- PROJECTGATE_HELIOCENTRIC_IDENTITY_END -->
+
+---
+
 # Make your AI 10^79× stronger
 
 [Why this works](docs/CUBE_MODEL.md)
@@ -6,7 +19,7 @@ ProjectGate is an AI Reality Layer for AI-assisted work.
 
 It stops AI agents from acting on unsupported facts by forcing work through TaskRun evidence, SOPs, KnownBugRules, runtime gates, and owner decisions.
 
-**Current alpha:** v0.4.7
+**Current alpha:** v0.4.8
 
 ## Start here
 
