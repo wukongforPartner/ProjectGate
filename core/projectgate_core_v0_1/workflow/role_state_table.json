@@ -1,0 +1,210 @@
+{
+  "version": "0.1",
+  "roles": [
+    {
+      "id": "Owner",
+      "allowedStates": [
+        "IDLE",
+        "NEED_CLARIFICATION",
+        "NEED_USER_INPUT",
+        "NEED_OWNER_DECISION",
+        "STOP"
+      ],
+      "outputs": [
+        "TaskIntent",
+        "ClarifiedIntent",
+        "UserProvidedFact",
+        "PermissionDecision",
+        "OwnerDecision"
+      ],
+      "forbidden": [
+        "manageCommands",
+        "auditAiHonesty",
+        "inspectAnchors",
+        "handleInternalFailures"
+      ]
+    },
+    {
+      "id": "Orchestrator",
+      "allowedStates": [
+        "INTAKE",
+        "CLASSIFYING",
+        "FACT_COLLECTION_PLAN",
+        "NEXT_STAGE",
+        "INTERNAL_REPAIR_LOOP"
+      ],
+      "outputs": [
+        "TaskBrief",
+        "StageGuess",
+        "RoleDispatchPlan",
+        "NextState",
+        "RepairRoute"
+      ],
+      "forbidden": [
+        "judgeFactTruth",
+        "emitPass",
+        "makeOwnerValueDecision",
+        "patchSource"
+      ]
+    },
+    {
+      "id": "StateStore",
+      "allowedStates": [
+        "ALL"
+      ],
+      "outputs": [
+        "StateSnapshot",
+        "FactsInvalidated",
+        "StageTokenStored",
+        "GateHistory"
+      ],
+      "forbidden": [
+        "treatHistoricalFactsAsCurrent"
+      ]
+    },
+    {
+      "id": "RuleSelector",
+      "allowedStates": [
+        "CLASSIFYING"
+      ],
+      "outputs": [
+        "LoadedRulePacks"
+      ],
+      "forbidden": [
+        "askOwnerToRememberRules"
+      ]
+    },
+    {
+      "id": "FactCollector",
+      "allowedStates": [
+        "FACT_COLLECTION_PLAN",
+        "FACT_COLLECTING",
+        "ENTRY_MAP_STAGE",
+        "ANCHOR_MAP_STAGE",
+        "INTERNAL_REPAIR_LOOP"
+      ],
+      "outputs": [
+        "FactBundle",
+        "EntryMap",
+        "AnchorMap",
+        "FactCollectionError"
+      ],
+      "forbidden": [
+        "designSolution",
+        "patchSource",
+        "generalizeFromSingleSample"
+      ]
+    },
+    {
+      "id": "Synthesizer",
+      "allowedStates": [
+        "FACT_BUNDLE_READY",
+        "SYNTHESIS",
+        "INTERNAL_REPAIR_LOOP"
+      ],
+      "outputs": [
+        "StructuredDraft"
+      ],
+      "forbidden": [
+        "patchSource",
+        "claimVerification",
+        "inventFacts"
+      ]
+    },
+    {
+      "id": "Reviewer",
+      "allowedStates": [
+        "REVIEW",
+        "INTERNAL_REPAIR_LOOP"
+      ],
+      "outputs": [
+        "REVIEW_PASS",
+        "REVIEW_FAIL",
+        "REVIEW_NEEDS_FACTS"
+      ],
+      "forbidden": [
+        "emitPass",
+        "patchSource",
+        "delegateInternalFailureToOwner"
+      ]
+    },
+    {
+      "id": "Gate",
+      "allowedStates": [
+        "GATE_CHECK",
+        "UNRECOVERABLE_STOP"
+      ],
+      "outputs": [
+        "GateDecision",
+        "StageToken",
+        "FailReport",
+        "RepairRequest",
+        "OwnerQuestion",
+        "UnrecoverableReport"
+      ],
+      "forbidden": [
+        "passByConfidence"
+      ]
+    },
+    {
+      "id": "Executor",
+      "allowedStates": [
+        "EXECUTION_STAGE"
+      ],
+      "outputs": [
+        "ResultFile",
+        "PatchResult",
+        "ExecutionLog"
+      ],
+      "forbidden": [
+        "expandScope",
+        "inventAnchors",
+        "modifyUnauthorizedFiles"
+      ]
+    },
+    {
+      "id": "Verifier",
+      "allowedStates": [
+        "VERIFICATION_STAGE",
+        "INTERNAL_REPAIR_LOOP"
+      ],
+      "outputs": [
+        "VerifyReport"
+      ],
+      "forbidden": [
+        "trustAiSelfReport"
+      ]
+    },
+    {
+      "id": "MemoryCurator",
+      "allowedStates": [
+        "MEMORY_STAGE",
+        "INCIDENT_RECORD"
+      ],
+      "outputs": [
+        "Archive",
+        "SOPCandidate",
+        "KnownBugRuleCandidate"
+      ],
+      "forbidden": [
+        "writeEssayInsteadOfCandidate"
+      ]
+    },
+    {
+      "id": "IncidentRecorder",
+      "allowedStates": [
+        "INCIDENT_RECORD",
+        "INTERNAL_REPAIR_LOOP",
+        "UNRECOVERABLE_STOP"
+      ],
+      "outputs": [
+        "IncidentRecord",
+        "RepairPlan",
+        "UnrecoverableReport"
+      ],
+      "forbidden": [
+        "swallowFailure"
+      ]
+    }
+  ]
+}

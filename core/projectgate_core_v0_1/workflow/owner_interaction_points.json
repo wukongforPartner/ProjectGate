@@ -1,0 +1,74 @@
+{
+  "version": "0.1",
+  "ownerVisibleStates": [
+    "IDLE",
+    "NEED_CLARIFICATION",
+    "NEED_USER_INPUT",
+    "NEED_OWNER_DECISION",
+    "NEXT_STAGE",
+    "MEMORY_STAGE",
+    "UNRECOVERABLE_STOP",
+    "STOP"
+  ],
+  "ownerPromptStates": [
+    "IDLE",
+    "NEED_CLARIFICATION",
+    "NEED_USER_INPUT",
+    "NEED_OWNER_DECISION"
+  ],
+  "hiddenInternalStates": [
+    "INTAKE",
+    "CLASSIFYING",
+    "FACT_COLLECTION_PLAN",
+    "FACT_COLLECTING",
+    "FACT_BUNDLE_READY",
+    "SYNTHESIS",
+    "REVIEW",
+    "GATE_CHECK",
+    "INTERNAL_REPAIR_LOOP",
+    "INCIDENT_RECORD",
+    "ENTRY_MAP_STAGE",
+    "ANCHOR_MAP_STAGE",
+    "EXECUTION_STAGE",
+    "VERIFICATION_STAGE"
+  ],
+  "ownerOnlyInputs": [
+    "goalClarification",
+    "externalFact",
+    "permission",
+    "writeAuthorization",
+    "riskDecision",
+    "productJudgment",
+    "stopDecision"
+  ],
+  "rules": [
+    {
+      "id": "UI-OWNER-001",
+      "text": "Do not expose internally repairable failures to Owner unless Owner actively inspects."
+    },
+    {
+      "id": "UI-OWNER-002",
+      "text": "Ask Owner only for intent, unavailable facts, authorization, risk decisions, or product judgment."
+    },
+    {
+      "id": "UI-OWNER-003",
+      "text": "Gate FAIL does not imply asking Owner; default route is InternalRepairLoop."
+    },
+    {
+      "id": "UI-OWNER-004",
+      "text": "Only Owner-only blockers reach NEED_OWNER_DECISION or NEED_USER_INPUT."
+    },
+    {
+      "id": "UI-OWNER-005",
+      "text": "Internal failures must be recorded in StateStore or GateHistory but not interrupt Owner."
+    },
+    {
+      "id": "UI-OWNER-006",
+      "text": "Owner must not manage commands, windows, output files, model names, or execution ordering."
+    },
+    {
+      "id": "UI-OWNER-007",
+      "text": "Owner questions must be minimal and free of internal debugging burden."
+    }
+  ]
+}

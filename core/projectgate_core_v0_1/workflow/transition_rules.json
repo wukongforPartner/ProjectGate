@@ -1,0 +1,136 @@
+{
+  "version": "0.1",
+  "gateDecisions": [
+    {
+      "id": "PASS",
+      "fromState": "GATE_CHECK",
+      "nextState": "NEXT_STAGE",
+      "ownerVisible": true,
+      "ownerRequired": false
+    },
+    {
+      "id": "INTERNAL_REPAIR",
+      "fromState": "GATE_CHECK",
+      "nextState": "INTERNAL_REPAIR_LOOP",
+      "ownerVisible": false,
+      "ownerRequired": false
+    },
+    {
+      "id": "NEED_MORE_FACTS_AUTOFIXABLE",
+      "fromState": "GATE_CHECK",
+      "nextState": "INTERNAL_REPAIR_LOOP",
+      "ownerVisible": false,
+      "ownerRequired": false
+    },
+    {
+      "id": "NEED_USER_INPUT",
+      "fromState": "GATE_CHECK",
+      "nextState": "NEED_USER_INPUT",
+      "ownerVisible": true,
+      "ownerRequired": true
+    },
+    {
+      "id": "NEED_OWNER_DECISION",
+      "fromState": "GATE_CHECK",
+      "nextState": "NEED_OWNER_DECISION",
+      "ownerVisible": true,
+      "ownerRequired": true
+    },
+    {
+      "id": "UNRECOVERABLE_STOP",
+      "fromState": "GATE_CHECK",
+      "nextState": "UNRECOVERABLE_STOP",
+      "ownerVisible": true,
+      "ownerRequired": false
+    }
+  ],
+  "rules": [
+    {
+      "id": "TR-001",
+      "text": "Every task starts from IDLE to INTAKE."
+    },
+    {
+      "id": "TR-002",
+      "text": "INTAKE wakes Orchestrator only."
+    },
+    {
+      "id": "TR-003",
+      "text": "Unclear goals route to NEED_CLARIFICATION, never guessing."
+    },
+    {
+      "id": "TR-004",
+      "text": "Classifying loads rules through RuleSelector."
+    },
+    {
+      "id": "TR-005",
+      "text": "No LoadedRulePacks, no FACT_COLLECTION_PLAN."
+    },
+    {
+      "id": "TR-006",
+      "text": "No FactBundle, no SYNTHESIS."
+    },
+    {
+      "id": "TR-007",
+      "text": "No StructuredDraft, no REVIEW."
+    },
+    {
+      "id": "TR-008",
+      "text": "No ReviewFindings, no GATE_CHECK."
+    },
+    {
+      "id": "TR-009",
+      "text": "Only Gate emits PASS."
+    },
+    {
+      "id": "TR-010",
+      "text": "Gate failure defaults to INTERNAL_REPAIR_LOOP, not Owner."
+    },
+    {
+      "id": "TR-011",
+      "text": "Autofixable fact gaps are repaired internally."
+    },
+    {
+      "id": "TR-012",
+      "text": "Only Owner-only inputs route to Owner interaction states."
+    },
+    {
+      "id": "TR-013",
+      "text": "Execution requires StageToken, AnchorMap, and Owner authorization."
+    },
+    {
+      "id": "TR-014",
+      "text": "Execution routes to verification."
+    },
+    {
+      "id": "TR-015",
+      "text": "Verification reports route back to GateCheck."
+    },
+    {
+      "id": "TR-016",
+      "text": "Closed tasks enter MEMORY_STAGE or STOP."
+    },
+    {
+      "id": "TR-017",
+      "text": "Owner inspection does not change workflow state."
+    },
+    {
+      "id": "TR-018",
+      "text": "Internal repair is stored but hidden from Owner by default."
+    }
+  ],
+  "roleAuthority": {
+    "passEmitter": "Gate",
+    "reviewerOutputs": [
+      "REVIEW_PASS",
+      "REVIEW_FAIL",
+      "REVIEW_NEEDS_FACTS"
+    ],
+    "forbiddenOwnerDelegations": [
+      "autofixableFactGap",
+      "schemaFailure",
+      "reviewFailure",
+      "verifierFailure",
+      "toolRetryableFailure"
+    ]
+  }
+}

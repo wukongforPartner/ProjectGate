@@ -1,0 +1,355 @@
+{
+  "version": "0.1",
+  "states": [
+    {
+      "id": "IDLE",
+      "name": "Idle",
+      "ownerVisible": true,
+      "allowedRoles": [
+        "Owner"
+      ],
+      "requiredOutputs": [
+        "TaskIntent"
+      ],
+      "transitions": [
+        "INTAKE"
+      ]
+    },
+    {
+      "id": "INTAKE",
+      "name": "Task intake",
+      "ownerVisible": false,
+      "allowedRoles": [
+        "Orchestrator"
+      ],
+      "requiredOutputs": [
+        "TaskBrief"
+      ],
+      "transitions": [
+        "CLASSIFYING",
+        "NEED_CLARIFICATION"
+      ]
+    },
+    {
+      "id": "NEED_CLARIFICATION",
+      "name": "Need clarification",
+      "ownerVisible": true,
+      "allowedRoles": [
+        "Owner"
+      ],
+      "requiredOutputs": [
+        "ClarifiedIntent"
+      ],
+      "transitions": [
+        "INTAKE"
+      ]
+    },
+    {
+      "id": "CLASSIFYING",
+      "name": "Task classification",
+      "ownerVisible": false,
+      "allowedRoles": [
+        "Orchestrator",
+        "RuleSelector"
+      ],
+      "requiredOutputs": [
+        "StageGuess",
+        "LoadedRulePacks"
+      ],
+      "transitions": [
+        "FACT_COLLECTION_PLAN",
+        "NEED_OWNER_DECISION"
+      ]
+    },
+    {
+      "id": "FACT_COLLECTION_PLAN",
+      "name": "Fact collection plan",
+      "ownerVisible": false,
+      "allowedRoles": [
+        "Orchestrator",
+        "FactCollector"
+      ],
+      "requiredOutputs": [
+        "FactPlan"
+      ],
+      "transitions": [
+        "FACT_COLLECTING"
+      ]
+    },
+    {
+      "id": "FACT_COLLECTING",
+      "name": "Fact collecting",
+      "ownerVisible": false,
+      "allowedRoles": [
+        "FactCollector"
+      ],
+      "requiredOutputs": [
+        "FactBundle",
+        "FactCollectionError"
+      ],
+      "transitions": [
+        "FACT_BUNDLE_READY",
+        "INTERNAL_REPAIR_LOOP",
+        "NEED_USER_INPUT"
+      ]
+    },
+    {
+      "id": "FACT_BUNDLE_READY",
+      "name": "Fact bundle ready",
+      "ownerVisible": false,
+      "allowedRoles": [
+        "Synthesizer"
+      ],
+      "requiredOutputs": [
+        "FactBundle"
+      ],
+      "transitions": [
+        "SYNTHESIS"
+      ]
+    },
+    {
+      "id": "SYNTHESIS",
+      "name": "Synthesis",
+      "ownerVisible": false,
+      "allowedRoles": [
+        "Synthesizer"
+      ],
+      "requiredOutputs": [
+        "StructuredDraft"
+      ],
+      "transitions": [
+        "REVIEW",
+        "INTERNAL_REPAIR_LOOP"
+      ]
+    },
+    {
+      "id": "REVIEW",
+      "name": "Review",
+      "ownerVisible": false,
+      "allowedRoles": [
+        "Reviewer"
+      ],
+      "requiredOutputs": [
+        "ReviewFindings"
+      ],
+      "transitions": [
+        "GATE_CHECK",
+        "INTERNAL_REPAIR_LOOP"
+      ]
+    },
+    {
+      "id": "GATE_CHECK",
+      "name": "Gate check",
+      "ownerVisible": false,
+      "allowedRoles": [
+        "Gate"
+      ],
+      "requiredOutputs": [
+        "GateDecision"
+      ],
+      "transitions": [
+        "NEXT_STAGE",
+        "INTERNAL_REPAIR_LOOP",
+        "NEED_USER_INPUT",
+        "NEED_OWNER_DECISION",
+        "UNRECOVERABLE_STOP"
+      ]
+    },
+    {
+      "id": "INTERNAL_REPAIR_LOOP",
+      "name": "Internal repair loop",
+      "ownerVisible": false,
+      "allowedRoles": [
+        "Orchestrator",
+        "FactCollector",
+        "Synthesizer",
+        "Reviewer",
+        "Verifier",
+        "IncidentRecorder"
+      ],
+      "requiredOutputs": [
+        "RepairPlan",
+        "RoleOutput"
+      ],
+      "transitions": [
+        "FACT_COLLECTION_PLAN",
+        "SYNTHESIS",
+        "REVIEW",
+        "VERIFICATION_STAGE",
+        "INCIDENT_RECORD",
+        "UNRECOVERABLE_STOP"
+      ]
+    },
+    {
+      "id": "INCIDENT_RECORD",
+      "name": "Incident record",
+      "ownerVisible": false,
+      "allowedRoles": [
+        "MemoryCurator",
+        "IncidentRecorder"
+      ],
+      "requiredOutputs": [
+        "IncidentRecord"
+      ],
+      "transitions": [
+        "INTERNAL_REPAIR_LOOP",
+        "UNRECOVERABLE_STOP"
+      ]
+    },
+    {
+      "id": "NEED_USER_INPUT",
+      "name": "Need user input",
+      "ownerVisible": true,
+      "allowedRoles": [
+        "Owner"
+      ],
+      "requiredOutputs": [
+        "UserProvidedFact",
+        "PermissionDecision"
+      ],
+      "transitions": [
+        "FACT_COLLECTION_PLAN",
+        "STOP"
+      ]
+    },
+    {
+      "id": "NEED_OWNER_DECISION",
+      "name": "Need owner decision",
+      "ownerVisible": true,
+      "allowedRoles": [
+        "Owner"
+      ],
+      "requiredOutputs": [
+        "OwnerDecision"
+      ],
+      "transitions": [
+        "NEXT_STAGE",
+        "STOP"
+      ]
+    },
+    {
+      "id": "NEXT_STAGE",
+      "name": "Next stage dispatch",
+      "ownerVisible": true,
+      "allowedRoles": [
+        "Orchestrator"
+      ],
+      "requiredOutputs": [
+        "StageToken"
+      ],
+      "transitions": [
+        "ENTRY_MAP_STAGE",
+        "ANCHOR_MAP_STAGE",
+        "EXECUTION_STAGE",
+        "VERIFICATION_STAGE",
+        "MEMORY_STAGE"
+      ]
+    },
+    {
+      "id": "ENTRY_MAP_STAGE",
+      "name": "Entry map stage",
+      "ownerVisible": false,
+      "allowedRoles": [
+        "FactCollector"
+      ],
+      "requiredOutputs": [
+        "EntryMap"
+      ],
+      "transitions": [
+        "FACT_COLLECTION_PLAN",
+        "GATE_CHECK"
+      ]
+    },
+    {
+      "id": "ANCHOR_MAP_STAGE",
+      "name": "Anchor map stage",
+      "ownerVisible": false,
+      "allowedRoles": [
+        "FactCollector",
+        "Synthesizer",
+        "Reviewer"
+      ],
+      "requiredOutputs": [
+        "AnchorMap"
+      ],
+      "transitions": [
+        "GATE_CHECK"
+      ]
+    },
+    {
+      "id": "EXECUTION_STAGE",
+      "name": "Execution stage",
+      "ownerVisible": false,
+      "allowedRoles": [
+        "Executor"
+      ],
+      "requiredOutputs": [
+        "ResultFile",
+        "PatchResult",
+        "ExecutionLog"
+      ],
+      "transitions": [
+        "VERIFICATION_STAGE",
+        "INTERNAL_REPAIR_LOOP"
+      ]
+    },
+    {
+      "id": "VERIFICATION_STAGE",
+      "name": "Verification stage",
+      "ownerVisible": false,
+      "allowedRoles": [
+        "Verifier"
+      ],
+      "requiredOutputs": [
+        "VerifyReport"
+      ],
+      "transitions": [
+        "GATE_CHECK",
+        "INTERNAL_REPAIR_LOOP"
+      ]
+    },
+    {
+      "id": "MEMORY_STAGE",
+      "name": "Memory stage",
+      "ownerVisible": true,
+      "allowedRoles": [
+        "MemoryCurator"
+      ],
+      "requiredOutputs": [
+        "Archive",
+        "RuleCandidate",
+        "SOPCandidate"
+      ],
+      "transitions": [
+        "STOP"
+      ]
+    },
+    {
+      "id": "UNRECOVERABLE_STOP",
+      "name": "Unrecoverable stop",
+      "ownerVisible": true,
+      "allowedRoles": [
+        "Gate",
+        "IncidentRecorder"
+      ],
+      "requiredOutputs": [
+        "UnrecoverableReport"
+      ],
+      "transitions": [
+        "STOP"
+      ]
+    },
+    {
+      "id": "STOP",
+      "name": "Stop",
+      "ownerVisible": true,
+      "allowedRoles": [],
+      "requiredOutputs": [
+        "ClosedTask"
+      ],
+      "transitions": [
+        "IDLE"
+      ]
+    }
+  ]
+}
