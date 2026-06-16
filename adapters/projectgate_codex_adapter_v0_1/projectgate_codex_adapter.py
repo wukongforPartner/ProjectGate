@@ -206,7 +206,12 @@ REQUIRED = [
     'scripts/runtime/projectgate_incident_capture.py',
     'scripts/runtime/projectgate_sop_candidate.py',
     'scripts/runtime/projectgate_select_knowledge.py',
-    'scripts/runtime/projectgate_build_knowledge_index.py'
+    'scripts/runtime/projectgate_build_knowledge_index.py',
+    'scripts/workflow/workflow_state_table.json',
+    'scripts/workflow/role_state_table.json',
+    'scripts/workflow/transition_rules.json',
+    'scripts/workflow/owner_interaction_points.json',
+    'scripts/workflow/projectgate_workflow_validator.py'
 ]
 
 
@@ -407,6 +412,18 @@ def build(args) -> int:
     runtime_src = core / 'runtime'
     if runtime_src.exists():
         copytree_merge(runtime_src, out / 'projectgate' / 'scripts' / 'runtime')
+    workflow_src = core / 'workflow'
+    if workflow_src.exists():
+        copytree_merge(workflow_src, out / 'projectgate' / 'scripts' / 'workflow')
+    else:
+        raise RuntimeError('missing workflow state machine payload: ' + str(workflow_src))
+    workflow_ref = out / 'projectgate' / 'references' / 'workflow'
+    workflow_ref.mkdir(parents=True, exist_ok=True)
+    docs_src = core.parent.parent / 'docs'
+    for name in ['WORKFLOW_STATE_MACHINE.md', 'WORKFLOW_STATE_MACHINE_CN.md']:
+        src = docs_src / name
+        if src.exists():
+            shutil.copy2(src, workflow_ref / name)
     write_installer(out)
     (out / 'README_INSTALL.md').write_text(f'''# ProjectGate Codex Pack\n\nGenerated for project: {manifest.get('projectName')}\n\n## Install\n\n```powershell\npython install_projectgate_codex_pack.py --dry-run\npython install_projectgate_codex_pack.py --install\n```\n\n## Optional project AGENTS.md\n\n```powershell\npython install_projectgate_codex_pack.py --dry-run --install-project-agents-md --project-root "<PROJECT_ROOT>"\n```\n\n## Use\n\n```text\n/goal $projectgate -p L: <task>\n/goal $projectgate -p M: <task>\n/goal $projectgate -p H: <task>\n```\n''', encoding='utf-8', newline='\n')
     package_manifest = {

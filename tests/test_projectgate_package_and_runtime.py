@@ -85,6 +85,30 @@ class ProjectGatePackageAndRuntimeTests(unittest.TestCase):
 
 
 
+
+    def test_codex_adapter_builds_skill_with_workflow_payload(self):
+        with tempfile.TemporaryDirectory(prefix='pg_test_codex_') as td:
+            out_dir = pathlib.Path(td) / 'codex'
+            adapter = ROOT / 'adapters' / 'projectgate_codex_adapter_v0_1' / 'projectgate_codex_adapter.py'
+            out = run([
+                PY,
+                adapter,
+                'build',
+                '--core-root', ROOT / 'core' / 'projectgate_core_v0_1',
+                '--project-pack', ROOT / 'examples' / 'dreamstory_project_pack_v0_1',
+                '--out', out_dir,
+            ])
+            self.assertIn('CODEX_PACK=', out)
+            skill_root = out_dir / 'projectgate'
+            self.assertTrue((skill_root / 'SKILL.md').exists())
+            self.assertTrue((skill_root / 'scripts' / 'workflow' / 'workflow_state_table.json').exists())
+            self.assertTrue((skill_root / 'scripts' / 'workflow' / 'projectgate_workflow_validator.py').exists())
+            self.assertTrue((skill_root / 'references' / 'workflow' / 'WORKFLOW_STATE_MACHINE.md').exists())
+            selftest = skill_root / 'scripts' / 'projectgate_skill_selftest.py'
+            selftest_out = run([PY, selftest], cwd=skill_root)
+            self.assertIn('PROJECTGATE_SKILL_SELFTEST=PASS', selftest_out)
+
+
     def test_qoderwork_adapter_builds_l2_workflow_package(self):
         with tempfile.TemporaryDirectory(prefix='pg_test_qoderwork_') as td:
             out_dir = pathlib.Path(td) / 'qoderwork'
@@ -120,6 +144,8 @@ class ProjectGatePackageAndRuntimeTests(unittest.TestCase):
             self.assertIn('L2_WORKFLOW.md', names)
             self.assertIn('UNSUPPORTED_GATES.md', names)
             self.assertIn('references/project/project_manifest.json', names)
+            self.assertIn('references/core/workflow/workflow_state_table.json', names)
+            self.assertIn('references/core/workflow/projectgate_workflow_validator.py', names)
             self.assertTrue(any(name.startswith('references/core/') for name in names))
             self.assertFalse(any('__pycache__' in name.split('/') or name.endswith('.pyc') for name in names))
 

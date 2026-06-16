@@ -51,6 +51,11 @@ def validate_core_root(core_root: pathlib.Path) -> None:
         core_root / 'runtime' / 'projectgate_cli.py',
         core_root / 'runtime' / 'projectgate_stage_gate.py',
         core_root / 'runtime' / 'projectgate_delivery_check.py',
+        core_root / 'workflow' / 'workflow_state_table.json',
+        core_root / 'workflow' / 'role_state_table.json',
+        core_root / 'workflow' / 'transition_rules.json',
+        core_root / 'workflow' / 'owner_interaction_points.json',
+        core_root / 'workflow' / 'projectgate_workflow_validator.py',
     ]
     missing = [str(p) for p in required if not p.exists()]
     if missing:
@@ -194,6 +199,11 @@ def validate_zip(zip_path: pathlib.Path) -> None:
         'UNSUPPORTED_GATES.md',
         'PACK_MANIFEST.json',
         'references/project/project_manifest.json',
+        'references/core/workflow/workflow_state_table.json',
+        'references/core/workflow/role_state_table.json',
+        'references/core/workflow/transition_rules.json',
+        'references/core/workflow/owner_interaction_points.json',
+        'references/core/workflow/projectgate_workflow_validator.py',
     }
     missing = sorted(required - names)
     if missing:
