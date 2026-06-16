@@ -6,6 +6,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import zipfile
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 PY = sys.executable
@@ -82,6 +83,45 @@ class ProjectGatePackageAndRuntimeTests(unittest.TestCase):
             out = run([PY, cli, 'continuity', '--taskrun', taskrun, '--input', transcript])
             self.assertIn('TASKRUN_CONTINUITY_GATE=PASS', out)
 
+
+
+    def test_qoderwork_adapter_builds_l2_workflow_package(self):
+        with tempfile.TemporaryDirectory(prefix='pg_test_qoderwork_') as td:
+            out_dir = pathlib.Path(td) / 'qoderwork'
+            adapter = ROOT / 'adapters' / 'projectgate_qoderwork_adapter_v0_1' / 'projectgate_qoderwork_adapter.py'
+            out = run([
+                PY,
+                adapter,
+                'build',
+                '--core-root', ROOT / 'core' / 'projectgate_core_v0_1',
+                '--project-pack', ROOT / 'examples' / 'dreamstory_project_pack_v0_1',
+                '--root-docs', ROOT,
+                '--out', out_dir,
+            ])
+            self.assertIn('QODERWORK_L2_WORKFLOW_PACKAGE_READY', out)
+            zip_path = out_dir / 'qoderwork_skill.zip'
+            self.assertTrue(zip_path.exists())
+            for name in [
+                'SKILL.md',
+                'L2_WORKFLOW.md',
+                'STAGE_REPORT_TEMPLATE.md',
+                'GATE_RESULT_TEMPLATE.md',
+                'UNSUPPORTED_GATES.md',
+                'PACK_MANIFEST.json',
+            ]:
+                self.assertTrue((out_dir / name).exists(), name)
+            skill_text = (out_dir / 'SKILL.md').read_text(encoding='utf-8')
+            self.assertIn('does not provide native hard enforcement inside QoderWork', skill_text)
+            unsupported_text = (out_dir / 'UNSUPPORTED_GATES.md').read_text(encoding='utf-8')
+            self.assertIn('UNSUPPORTED_GATE=QODERWORK_NATIVE_CLI_EXECUTION_NOT_CONFIRMED', unsupported_text)
+            with zipfile.ZipFile(zip_path) as zf:
+                names = set(zf.namelist())
+            self.assertIn('SKILL.md', names)
+            self.assertIn('L2_WORKFLOW.md', names)
+            self.assertIn('UNSUPPORTED_GATES.md', names)
+            self.assertIn('references/project/project_manifest.json', names)
+            self.assertTrue(any(name.startswith('references/core/') for name in names))
+            self.assertFalse(any('__pycache__' in name.split('/') or name.endswith('.pyc') for name in names))
 
 if __name__ == '__main__':
     unittest.main()

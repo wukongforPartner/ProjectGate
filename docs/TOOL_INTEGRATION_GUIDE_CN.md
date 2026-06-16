@@ -53,6 +53,7 @@ AI 协作不应基于未证实事实继续推进。
 - Claude Code：`examples/tool-integrations/claude-code.md`
 - Cursor：`examples/tool-integrations/cursor.md`
 - 通用 Agent：`examples/tool-integrations/generic-agent.md`
+- QoderWork：`examples/tool-integrations/qoderwork.md`
 
 ## 推荐的最低接入方式
 

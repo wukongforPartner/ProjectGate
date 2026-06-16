@@ -53,6 +53,7 @@ Task start
 - Claude Code: `examples/tool-integrations/claude-code.md`
 - Cursor: `examples/tool-integrations/cursor.md`
 - Generic Agent: `examples/tool-integrations/generic-agent.md`
+- QoderWork: `examples/tool-integrations/qoderwork.md`
 
 ## Recommended minimum integration
 
